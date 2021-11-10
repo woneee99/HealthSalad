@@ -12,9 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="start"
+        app:itemBackground="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/my_navigation_item"
-        tools:layout_editor_absoluteX="171dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/my_navigation_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
