@@ -21,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding{
+        enabled true
+    }
 }
 repositories {
     maven { url "https://jitpack.io" }
@@ -35,6 +38,10 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.android.support:design:31.0.0' // bottomNavigationView
 
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.databinding:baseLibrary:3.2.0-alpha11'
+    implementation 'com.google.code.gson:gson:2.8.7'
     testImplementation 'junit:junit:4.12'
 
 }
