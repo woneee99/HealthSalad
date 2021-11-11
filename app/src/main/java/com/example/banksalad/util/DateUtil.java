@@ -1,11 +1,13 @@
-package com.example.banksalad.utils;
+package com.example.banksalad.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DateFormat {
-    public final static String CALENDAR_HEADER_FORMAT = "yyyy년 MM월";
+public class DateUtil {
+    public final static String CALENDAR_HEADER_FORMAT = "yyyy-MM";
+    public final static String YEAR_FORMAT = "yyyy";
+    public final static String MONTH_FORMAT = "MM";
     public final static String DAY_FORMAT = "d";
 
     public static String getDate(long date, String pattern) {
