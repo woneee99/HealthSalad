@@ -11,6 +11,11 @@
         android:enabled="true"
         android:title="cal"/>
     <item
+        android:id="@+id/main"
+        android:icon="@drawable/ic_main"
+        android:enabled="true"
+        android:title="main"/>
+    <item
         android:id="@+id/plan"
         android:icon="@drawable/ic_plan"
         android:enabled="true"
@@ -20,4 +25,5 @@
         android:icon="@drawable/ic_change"
         android:enabled="true"
         android:title="change"/>
+
 </menu>
