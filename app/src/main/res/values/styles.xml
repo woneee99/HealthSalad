@@ -19,4 +19,13 @@
         <item name="android:textColor">@color/light_gray</item>
         <item name="android:background">@color/trans</item>
     </style>
+    <style name="TextViewStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/night_background</item>
+        <item name="android:background">@color/trans</item>
+    </style>
+
+    <style name="LineView">
+        <item name="android:background">@color/night_background</item>
+    </style>
+
 </resources>
