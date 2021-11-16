@@ -22,11 +22,13 @@
         android:hint="password 입력" />
 
     <Button
+        android:id="@+id/btnlogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="로그인" />
 
     <Button
+        android:id="@+id/btnjoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="회원가입"/>
