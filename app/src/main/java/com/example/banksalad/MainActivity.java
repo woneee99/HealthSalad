@@ -1,7 +1,9 @@
 package com.example.banksalad;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frag1, new tabFragment1());
         fragmentTransaction.commit();
     }
-
+    public void mOnClick(View v){
+        Intent intent = new Intent(getApplicationContext(),addList.class);
+        startActivity(intent);
+    }
 }
 
