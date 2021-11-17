@@ -95,19 +95,19 @@ public class joinActivity extends AppCompatActivity {
         });
 
 
-        btn_register=findViewById(R.id.btnjoin);
+        btn_register=findViewById(R.id.lets_join);
         btn_register.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 //editText에 입력되어있는 값을 get(가져온다)해온다
                 String userID=et_id.getText().toString();
-                final String userPass=et_pass.getText().toString();
+                String userPass=et_pass.getText().toString();
                 String userName=et_name.getText().toString();
-                String userBirth=(et_birth.getText().toString());
+                String userBirth=et_birth.getText().toString();
 
-                int selectRadioid = et_sex.getCheckedRadioButtonId(); //성별 라디오
-                selectedRadioButton = findViewById(selectRadioid);
+                int selectRadio = et_sex.getCheckedRadioButtonId(); //성별 라디오
+                selectedRadioButton = findViewById(selectRadio);
                 String selectedRbText = selectedRadioButton.getText().toString();
 
                 Double userHeight= Double.parseDouble(et_height.getText().toString());
