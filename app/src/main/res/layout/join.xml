@@ -88,26 +88,6 @@
         android:text="성별" />
 
 
-    <RadioGroup
-        android:id="@+id/sex"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/woman"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="남" />
-
-        <RadioButton
-            android:id="@+id/man"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="여" />
-
-    </RadioGroup>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
