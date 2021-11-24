@@ -23,8 +23,7 @@ import org.json.JSONObject;
 public class joinActivity extends AppCompatActivity {
     private EditText et_id, et_pass, et_name, et_birth,et_height,et_weight;
     private Button btn_register,validateButton;
-    private RadioGroup et_sex;
-    RadioButton selectedRadioButton;
+
 
     private AlertDialog dialog;
     private boolean validate=false;
@@ -38,11 +37,10 @@ public class joinActivity extends AppCompatActivity {
         et_pass=findViewById(R.id.join_password);
         et_name=findViewById(R.id.join_name);
         et_birth=findViewById(R.id.join_birth);
-        et_sex=findViewById(R.id.sex);
+
         et_height=findViewById(R.id.join_height);
         et_weight=findViewById(R.id.join_weight);
         validateButton=findViewById(R.id.validateButton);
-        //RadioGroup gendergroup = findViewById<RadioGroup>(R.id.sex)
 
         validateButton.setOnClickListener(new View.OnClickListener() {//id중복체크
             @Override
@@ -72,7 +70,6 @@ public class joinActivity extends AppCompatActivity {
                                 dialog.show();
                                 et_id.setEnabled(false);
                                 validate=true;
-
                             }
                             else{
                                 AlertDialog.Builder builder=new AlertDialog.Builder( joinActivity.this );
@@ -105,10 +102,6 @@ public class joinActivity extends AppCompatActivity {
                 String userName=et_name.getText().toString();
                 String userBirth=et_birth.getText().toString();
 
-                int selectRadio = et_sex.getCheckedRadioButtonId(); //성별 라디오
-                selectedRadioButton = findViewById(selectRadio);
-                String selectedRbText = selectedRadioButton.getText().toString();
-
                 Double userHeight= Double.parseDouble(et_height.getText().toString());
                 Double userweight= Double.parseDouble(et_weight.getText().toString());
 
@@ -135,7 +128,7 @@ public class joinActivity extends AppCompatActivity {
                     }
                 };
                 //서버로 volley를 이용해서 요청을 함
-                joinRequest registerRequest=new joinRequest(userID,userPass, userName, userBirth,userHeight,userweight,selectedRbText,responseListener);
+                joinRequest registerRequest=new joinRequest(userID,userPass, userName, userBirth,userHeight,userweight,responseListener);
                 RequestQueue queue= Volley.newRequestQueue(joinActivity.this);
                 queue.add(registerRequest);
             }
