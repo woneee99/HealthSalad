@@ -42,6 +42,7 @@ public class joinActivity extends AppCompatActivity {
         et_height=findViewById(R.id.join_height);
         et_weight=findViewById(R.id.join_weight);
         validateButton=findViewById(R.id.validateButton);
+        //RadioGroup gendergroup = findViewById<RadioGroup>(R.id.sex)
 
         validateButton.setOnClickListener(new View.OnClickListener() {//id중복체크
             @Override
@@ -67,13 +68,11 @@ public class joinActivity extends AppCompatActivity {
                             boolean success=jsonResponse.getBoolean("success");
                             if(success){
                                 AlertDialog.Builder builder=new AlertDialog.Builder( joinActivity.this );
-                                dialog=builder.setMessage("사용할 수 있는 아이디입니다.")
-                                        .setPositiveButton("확인",null)
-                                        .create();
+                                dialog=builder.setMessage("사용할 수 있는 아이디입니다.").setPositiveButton("확인",null).create();
                                 dialog.show();
                                 et_id.setEnabled(false);
                                 validate=true;
-                                validateButton.setText("확인");
+
                             }
                             else{
                                 AlertDialog.Builder builder=new AlertDialog.Builder( joinActivity.this );
@@ -95,19 +94,19 @@ public class joinActivity extends AppCompatActivity {
         });
 
 
-        btn_register=findViewById(R.id.btnjoin);
+        btn_register=findViewById(R.id.lets_join);
         btn_register.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 //editText에 입력되어있는 값을 get(가져온다)해온다
                 String userID=et_id.getText().toString();
-                final String userPass=et_pass.getText().toString();
+                String userPass=et_pass.getText().toString();
                 String userName=et_name.getText().toString();
-                String userBirth=(et_birth.getText().toString());
+                String userBirth=et_birth.getText().toString();
 
-                int selectRadioid = et_sex.getCheckedRadioButtonId(); //성별 라디오
-                selectedRadioButton = findViewById(selectRadioid);
+                int selectRadio = et_sex.getCheckedRadioButtonId(); //성별 라디오
+                selectedRadioButton = findViewById(selectRadio);
                 String selectedRbText = selectedRadioButton.getText().toString();
 
                 Double userHeight= Double.parseDouble(et_height.getText().toString());
@@ -120,12 +119,12 @@ public class joinActivity extends AppCompatActivity {
                             JSONObject jasonObject=new JSONObject(response);//Register2 php에 response
                             boolean success=jasonObject.getBoolean("success");//Register2 php에 sucess
                             if(success){ // 회원가입이 가능한다면
-                                Toast.makeText(getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(joinActivity.this, LoginActivity.class );
-                                startActivity(intent);
-                                finish();//액티비티를 종료시킴(회원등록 창을 닫음)
-
+                                AlertDialog.Builder builder = new AlertDialog.Builder(joinActivity.this);
+                                dialog = builder.setMessage("Register Your ID")
+                                        .setPositiveButton("OK", null)
+                                        .create();
+                                dialog.show();
+                                finish();
                             }else{// 회원가입이 안된다면
                                 Toast.makeText(getApplicationContext(), "회원가입에 실패했습니다. 다시 한 번 확인해 주세요.", Toast.LENGTH_SHORT).show();
                                 return;

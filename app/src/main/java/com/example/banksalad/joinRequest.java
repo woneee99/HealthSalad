@@ -10,7 +10,7 @@ import java.util.Map;
 public class joinRequest extends StringRequest {
 
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://127.0.0.1/join.php";
+    final static  private String URL="http://10.0.2.2/join.php";
     private Map<String,String>map;
 
     public joinRequest(String userID, String userPassword, String userName, String userBirth, double userHeight, double userWeight, String sex, Response.Listener<String>listener){
