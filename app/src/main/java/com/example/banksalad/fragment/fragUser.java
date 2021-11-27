@@ -14,13 +14,11 @@ import com.example.banksalad.R;
 
 public class fragUser extends Fragment {
     private View view;
-    private String TAG = "프래그먼트";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        Log.i(TAG, "onCreateView");
-        view = inflater.inflate(R.layout.activity_main, container, false);
+        view = inflater.inflate(R.layout.activity_my, container, false);
 
         return view;
     }

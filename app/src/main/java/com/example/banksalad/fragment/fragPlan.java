@@ -1,7 +1,6 @@
 package com.example.banksalad.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,11 @@ import com.example.banksalad.R;
 
 public class fragPlan extends Fragment {
     private View view;
-    private String TAG = "프래그먼트";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        Log.i(TAG, "onCreateView");
-        view = inflater.inflate(R.layout.activity_main, container, false);
+        view = inflater.inflate(R.layout.activity_calendar, container, false);
 
         return view;
     }
