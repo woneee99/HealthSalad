@@ -65,6 +65,7 @@ public class CalendarActivity extends Activity {
 
         //gridview 요일 표시
         dayList = new ArrayList<String>();
+        dayList.add("주차");
         dayList.add("일");
         dayList.add("월");
         dayList.add("화");
@@ -79,7 +80,7 @@ public class CalendarActivity extends Activity {
         mCal.set(Integer.parseInt(curYearFormat.format(date)), Integer.parseInt(curMonthFormat.format(date)) - 1, 1);
         int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         //1일 - 요일 매칭 시키기 위해 공백 add
-        for (int i = 1; i < dayNum; i++) {
+        for (int i = 0; i < dayNum; i++) {
             dayList.add("");
         }
         setCalendarDate(mCal.get(Calendar.MONTH) + 1);
