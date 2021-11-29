@@ -45,11 +45,6 @@ public class MainActivity extends AppCompatActivity {
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,tabFragment1).commitAllowingStateLoss();
 
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.frag1, new tabFragment1());
-        //fragmentTransaction.commit();
-
         bottomNavigationView = findViewById(R.id.navigation);
 
         //case 함수를 통해 클릭 받을 때마다 화면 변경하기
