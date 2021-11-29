@@ -9,8 +9,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -86,16 +84,14 @@ public class joinActivity extends AppCompatActivity {
                 ValidateRequest validateRequest=new ValidateRequest(userID,responseListener);
                 RequestQueue queue= Volley.newRequestQueue(joinActivity.this);
                 queue.add(validateRequest);
-
             }
         });
 
 
         btn_register=findViewById(R.id.lets_join);
         btn_register.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 //editText에 입력되어있는 값을 get(가져온다)해온다
                 String userID=et_id.getText().toString();
                 String userPass=et_pass.getText().toString();
@@ -105,18 +101,16 @@ public class joinActivity extends AppCompatActivity {
                 Double userHeight= Double.parseDouble(et_height.getText().toString());
                 Double userweight= Double.parseDouble(et_weight.getText().toString());
 
-                Response.Listener<String> responseListener=new Response.Listener<String>() {//volley
+                Response.Listener<String> responseListener = new Response.Listener<String>(){//volley
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jasonObject=new JSONObject(response);//Register2 php에 response
-                            boolean success=jasonObject.getBoolean("success");//Register2 php에 sucess
+                            JSONObject jsonResponse=new JSONObject(response);//joib php에 response
+                            boolean success=jsonResponse.getBoolean("success");//php에 sucess
                             if(success){ // 회원가입이 가능한다면
-                                AlertDialog.Builder builder = new AlertDialog.Builder(joinActivity.this);
-                                dialog = builder.setMessage("Register Your ID")
-                                        .setPositiveButton("OK", null)
-                                        .create();
-                                dialog.show();
+                                Toast.makeText(getApplicationContext(), "회원 등록 성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(joinActivity.this, LoginActivity.class);
+                                startActivity(intent);
                                 finish();
                             }else{// 회원가입이 안된다면
                                 Toast.makeText(getApplicationContext(), "회원가입에 실패했습니다. 다시 한 번 확인해 주세요.", Toast.LENGTH_SHORT).show();
@@ -131,6 +125,7 @@ public class joinActivity extends AppCompatActivity {
                 joinRequest registerRequest=new joinRequest(userID,userPass, userName, userBirth,userHeight,userweight,responseListener);
                 RequestQueue queue= Volley.newRequestQueue(joinActivity.this);
                 queue.add(registerRequest);
+
             }
         });
     }

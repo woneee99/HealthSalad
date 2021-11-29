@@ -13,7 +13,7 @@ public class joinRequest extends StringRequest {
     final static  private String URL="http://10.0.2.2/join.php";
     private Map<String,String>map;
 
-    public joinRequest(String userID, String userPassword, String userName, String userBirth, double userHeight, double userWeight, Response.Listener<String>listener){
+    public joinRequest(String userID, String userPassword, String userName, String userBirth, Double userHeight, Double userWeight, Response.Listener<String>listener){
         super(Method.POST,URL,listener,null); //위 url에 post방식으로 값을 전송
 
         map=new HashMap<>();
