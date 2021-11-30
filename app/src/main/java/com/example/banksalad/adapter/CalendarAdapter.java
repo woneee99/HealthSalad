@@ -15,7 +15,9 @@ import com.example.banksalad.model.CalendarHeader;
 import com.example.banksalad.model.Day;
 import com.example.banksalad.model.EmptyDay;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter {
@@ -46,6 +48,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
         }
     }
 
+    // onCreateViewHolder(ViewGroup parent, int viewType) : viewType 형태의 아이템 뷰를 위한 뷰홀더 객체 생성.
     // viewHolder 생성
     @NonNull
     @Override
@@ -71,13 +74,14 @@ public class CalendarAdapter extends RecyclerView.Adapter {
         }
     }
 
+    //onBindViewHolder(ViewHolder holder, int position) : position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     // 데이터 넣어서 완성시키는것
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         int viewType = getItemViewType(position);
 
         /**날짜 타입 꾸미기*/
-        /** EX : 2018년 8월*/
+        /** EX : 2021년 11월*/
         if (viewType == HEADER_TYPE) {
             HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
             Object item = mCalendarList.get(position);
@@ -85,7 +89,7 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
             // long type의 현재시간
             if (item instanceof Long) {
-                // 현재시간 넣으면, 2017년 7월 같이 패턴에 맞게 model에 데이터들어감.
+                // 현재시간 넣으면, 2017년 7월 같이 패턴에 맞게 model에 데이터 들어감.
                 model.setHeader((Long) item);
             }
             // view에 표시하기
@@ -105,7 +109,6 @@ public class CalendarAdapter extends RecyclerView.Adapter {
             Object item = mCalendarList.get(position);
             Day model = new Day();
             if (item instanceof Calendar) {
-
                 // Model에 Calendar값을 넣어서 몇일인지 데이터 넣기
                 model.setCalendar((Calendar) item);
             }
@@ -114,7 +117,8 @@ public class CalendarAdapter extends RecyclerView.Adapter {
         }
     }
 
-    // 개수구하기
+    // getItemCount() : 전체 아이템 갯수 리턴.
+    // 개수 구하기
     @Override
     public int getItemCount() {
         if (mCalendarList != null) {
@@ -124,7 +128,6 @@ public class CalendarAdapter extends RecyclerView.Adapter {
     }
     /** viewHolder */
     private class HeaderViewHolder extends RecyclerView.ViewHolder { //날짜 타입 ViewHolder
-
         TextView itemHeaderTitle;
 
         public HeaderViewHolder(@NonNull View itemView) {
@@ -133,30 +136,22 @@ public class CalendarAdapter extends RecyclerView.Adapter {
             initView(itemView);
         }
 
-
         public void initView(View v){
             itemHeaderTitle = (TextView)v.findViewById(R.id.item_header_title);
         }
 
         public void bind(CalendarHeader model){
-
             // 일자 값 가져오기
             String header = ((CalendarHeader)model).getHeader();
 
-            // header에 표시하기, ex : 2018년 8월
+            // header에 표시하기, ex : 2021년 11월
             itemHeaderTitle.setText(header);
-
-
         };
     }
 
-
     private class EmptyViewHolder extends RecyclerView.ViewHolder { // 비어있는 요일 타입 ViewHolder
-
-
         public EmptyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             initView(itemView);
         }
 
@@ -166,13 +161,15 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
         public void bind(EmptyDay model){
 
-
         };
     }
 
     // TODO : item_day와 매칭
     private class DayViewHolder extends RecyclerView.ViewHolder {// 요일 입 ViewHolder
         TextView itemDay;
+        TextView selectDay;
+        TextView text1;
+        TextView text2;
 
         public DayViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -183,15 +180,48 @@ public class CalendarAdapter extends RecyclerView.Adapter {
 
         public void initView(View v){
             itemDay = (TextView)v.findViewById(R.id.item_day);
+            selectDay = (TextView)v.findViewById(R.id.select_day);
+            text1 = (TextView)v.findViewById(R.id.food_kcal);
+            text2 = (TextView)v.findViewById(R.id.exercise_kcal);
         }
 
         public void bind(Day model){
             // 일자 값 가져오기
             String day = ((Day)model).getDay();
+            int check = 1;
 
-            // 일자 값 View에 보이게하기
-            itemDay.setText(day);
+            if(check == 1){
+                SimpleDateFormat sdf = new SimpleDateFormat ( "yyyy-MM-dd");
+                Date now = new Date();
+                String today = sdf.format(now);
+                String temp = ((Day)model).getYear()+"-"+((Day)model).getMonth()+"-"+day; //현재 칸 날짜 -> db 조회 할 떄 사용하귀
+                // 달력에 추가할떄도 temp
 
+                if(day.charAt(0) == '0') {
+                    day = day.substring(1);
+                }
+
+                if(today.equals(temp) && check==1){
+                    selectDay.setText(day);
+//                    text1.setText("음식: " +"10kcal");
+                    check=0;
+                }
+                else{
+                    // 일자 값 View에 보이게하기
+                    itemDay.setText(day);
+                }
+                //if(음식 값 있을떄?)
+                text1.setText("음식: " +"10kcal");
+                //if(운동 값 있을떄?)
+                text2.setText("운동ㅇ");
+            }
+            else{
+                // 일자 값 View에 보이게하기
+                itemDay.setText(day);
+
+                text1.setText("음식: " +"10kcal");
+                text2.setText("운동: " +"10kcal");
+            }
         };
     }
 }
