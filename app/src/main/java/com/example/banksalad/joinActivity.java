@@ -50,6 +50,11 @@ public class joinActivity extends AppCompatActivity {
                 String userID=et_id.getText().toString();
                 if(validate)
                 {
+                    AlertDialog.Builder builder=new AlertDialog.Builder( joinActivity.this );
+                    dialog=builder.setMessage("DB안됨")
+                            .setPositiveButton("확인",null)
+                            .create();
+                    dialog.show();
                     return;
                 }
                 if(userID.equals("")){
