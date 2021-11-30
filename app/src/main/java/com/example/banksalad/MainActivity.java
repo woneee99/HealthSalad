@@ -9,16 +9,12 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.banksalad.fragment.fragChange;
+import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragUser;
 import com.example.banksalad.fragment.tabFragment1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment tabFragment1;
     Fragment fragUser;
     Fragment fragPlan;
-    Fragment fragChange;
+    Fragment fragWatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         tabFragment1 = new tabFragment1();
         fragUser = new fragUser();
         fragPlan = new fragPlan();
-        fragChange = new fragChange();
+        fragWatch = new fragWatch();
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -60,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.plan:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        break;
+                    case R.id.watch:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
                         break;
                 }
                 return true;

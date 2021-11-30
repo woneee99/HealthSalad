@@ -15,5 +15,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tool:text="00" />
+    <TextView
+        android:id="@+id/select_day"
+        android:textSize="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="#0000FF"
+        tool:text="00" />
 
+    <TextView
+        android:id="@+id/food_kcal"
+        android:textSize="9dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        tool:text="음식 칼로리:" />
+    <TextView
+        android:id="@+id/exercise_kcal"
+        android:textSize="9dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        tool:text="운동 칼로리:" />
 </RelativeLayout>

@@ -21,8 +21,8 @@
         android:enabled="true"
         android:title="plan"/>
     <item
-        android:id="@+id/change"
-        android:icon="@drawable/ic_change"
+        android:id="@+id/watch"
+        android:icon="@drawable/ic_watch"
         android:enabled="true"
         android:title="change"/>
 
