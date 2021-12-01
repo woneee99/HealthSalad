@@ -4,11 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import static androidx.constraintlayout.widget.StateSet.TAG;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -53,13 +54,20 @@ public class LoginActivity extends AppCompatActivity {
                             if (success) {//회원등록 성공한 경우
                                 String userID = jasonObject.getString("userID");
                                 String userPass = jasonObject.getString("userPassword");
+                                String userName = jasonObject.getString("userName");
+                                String userWeight = jasonObject.getString("userWeight");
+                                String userBirth = jasonObject.getString("userBirth");
+                                String userHeight = jasonObject.getString("userHeight");
                                 Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPass);
+                                intent.putExtra("userName", userName);
+                                intent.putExtra("userWeight", userWeight);
+                                intent.putExtra("userHeight", userHeight);
+                                intent.putExtra("userBirth", userBirth);
                                 startActivity(intent);
                             }
-
                             else{//회원등록 실패한 경우
                                 Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
                                 return;
