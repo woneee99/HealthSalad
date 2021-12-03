@@ -18,8 +18,6 @@ import com.example.banksalad.fragment.fragUser;
 import com.example.banksalad.fragment.tabFragment1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import static androidx.constraintlayout.widget.StateSet.TAG;
-
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
