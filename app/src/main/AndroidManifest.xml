@@ -30,6 +30,7 @@
         </activity>
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".joinActivity" ></activity>
+        <activity android:name=".CalendarActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".addList"></activity>
     </application>

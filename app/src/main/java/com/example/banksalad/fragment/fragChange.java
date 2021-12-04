@@ -24,4 +24,6 @@ public class fragChange extends Fragment {
 
         return view;
     }
+
+
 }
