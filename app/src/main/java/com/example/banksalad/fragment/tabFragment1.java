@@ -23,7 +23,6 @@ import java.util.GregorianCalendar;
 
 public class tabFragment1 extends BaseFragment{
     public int mCenterPosition;
-    private long mCurrentTime;
     public ArrayList<Object> mCalendarList = new ArrayList<>();
 
     public TextView textView;
@@ -56,7 +55,6 @@ public class tabFragment1 extends BaseFragment{
     }
 
     private void setRecycler() {
-
         if (mCalendarList == null) {
             Log.w(TAG, "No Query, not initializing RecyclerView");
         }
@@ -65,7 +63,7 @@ public class tabFragment1 extends BaseFragment{
 
         mAdapter = new CalendarAdapter(mCalendarList);
 
-        mAdapter.setCalendarList(mCalendarList);
+        //mAdapter.setCalendarList(mCalendarList);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
 
@@ -87,7 +85,7 @@ public class tabFragment1 extends BaseFragment{
 
                 calendarList.add(calendar.getTimeInMillis());
 
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
+                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있다.
                 int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
 
                 for (int j = 0; j < dayOfWeek; j++) {
