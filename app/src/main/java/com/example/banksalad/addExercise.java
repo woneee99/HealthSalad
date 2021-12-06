@@ -33,7 +33,7 @@ public class addExercise extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        cal_sport_userId="yys"; // userID 받아오기
+        cal_sport_userId="hwangjuwon"; // userID 받아오기
 
         button = findViewById(R.id.ok_exercise);
         temp = intent.getStringExtra("datetext");
