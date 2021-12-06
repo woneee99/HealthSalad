@@ -2,6 +2,7 @@ package com.example.banksalad;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
@@ -9,11 +10,12 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.banksalad.fragment.fragCal;
-import com.example.banksalad.fragment.fragChange;
+import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragUser;
+import com.example.banksalad.fragment.fragCal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragCal;
     Fragment fragUser;
     Fragment fragPlan;
-    Fragment fragChange;
+    Fragment fragWatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,13 @@ public class MainActivity extends AppCompatActivity {
         fragCal = new fragCal();
         fragUser = new fragUser();
         fragPlan = new fragPlan();
-        fragChange = new fragChange();
+        fragWatch = new fragWatch();
+
+        Intent intent = getIntent();
+        final String userName = intent.getStringExtra("userName");
+        final String userBirth = intent.getStringExtra("userBirth");
+        final String userHeight = intent.getStringExtra("userHeight");
+        final String userWeight = intent.getStringExtra("userWeight");
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -52,14 +60,36 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
                         break;
                     case R.id.user:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragUser()).commit();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userName",userName);
+                        bundle.putString("userBirth",userBirth);
+                        bundle.putString("userHeight",userHeight);
+                        bundle.putString("userWeight",userWeight);
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        Fragment fragment1 = new fragUser();
+                        fragment1.setArguments(bundle);
+                        transaction.replace(R.id.frame_container, fragment1);
+                        transaction.commit();
                         break;
                     case R.id.plan:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        break;
+                    case R.id.watch:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
                         break;
                 }
                 return true;
             }
         });
+
+    }
+
+    public void mOnClick(View v){
+        Intent intent = new Intent(getApplicationContext(),addList.class);
+        startActivity(intent);
+    }
+    public void alterOnClick(View v){
+        Intent intent = new Intent(getApplicationContext(),MyAlterActivity.class);
+        startActivity(intent);
     }
 }
