@@ -9,23 +9,19 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.example.banksalad.fragment.fragCal;
 import com.example.banksalad.fragment.fragChange;
 import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragUser;
-import com.example.banksalad.fragment.tabFragment1;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Menu menu;
 
-    Fragment tabFragment1;
+    Fragment fragCal;
     Fragment fragUser;
     Fragment fragPlan;
     Fragment fragChange;
@@ -35,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabFragment1 = new tabFragment1();
+        fragCal = new fragCal();
         fragUser = new fragUser();
         fragPlan = new fragPlan();
         fragChange = new fragChange();
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigation);
 
         //첫 화면 띄우기
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,tabFragment1).commitAllowingStateLoss();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,tabFragment1).commitAllowingStateLoss();
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.cal :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new tabFragment1()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
                         break;
                     case R.id.user:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragUser()).commit();
@@ -65,9 +61,5 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-    public void mOnClick(View v){
-        Intent intent = new Intent(getApplicationContext(),addList.class);
-        startActivity(intent);
     }
 }

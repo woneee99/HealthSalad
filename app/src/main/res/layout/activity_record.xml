@@ -71,76 +71,98 @@
                 android:text="추가하기"
                 android:onClick="mOnClickfood"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/breakfast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아침"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="35dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/breakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아침"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="35dp"/>
+            <TextView
+                android:id="@+id/breakfast_kcal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": "
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/breakfast_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="- "
-            android:layout_marginLeft="50dp"/>
-        <TextView
-            android:id="@+id/breakfast_kcal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="- "
-            android:layout_marginLeft="50dp"/>
-        <TextView
-            android:id="@+id/lunch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="점심 "
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="35dp"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="7dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/lunch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="점심"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="35dp"/>
+            <TextView
+                android:id="@+id/lunch_kcal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": "
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/lunch_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="- "
-            android:layout_marginLeft="50dp"/>
-        <TextView
-            android:id="@+id/lunch_kcal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="- "
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="7dp"/>
 
-        <TextView
-            android:id="@+id/dinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="저녁 "
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="35dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저녁"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="35dp"/>
+            <TextView
+                android:id="@+id/dinner_kcal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": "
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/dinner_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
             android:text="- "
-            android:layout_marginLeft="50dp"/>
-        <TextView
-            android:id="@+id/dinner_kcal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="- "
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="7dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -151,6 +173,7 @@
                 android:text="운동"
                 android:textStyle="bold"
                 android:textSize="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="25dp"/>
 
             <Button
@@ -163,24 +186,29 @@
                 android:text="추가하기"
                 android:onClick="mOnClickexercise"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/exercise_list"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="- "
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="50dp">
+            <TextView
+                android:id="@+id/exercise_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="- "/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/ok_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/circle"
         android:text="확인"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:onClick="mOnClickRecord"/>
 
 </LinearLayout>

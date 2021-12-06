@@ -72,7 +72,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@drawable/circle"
         android:text="확인"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="15dp"
         android:textStyle="bold"/>
 

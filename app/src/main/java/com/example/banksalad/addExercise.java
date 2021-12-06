@@ -19,17 +19,29 @@ import org.json.JSONObject;
 
 public class addExercise extends AppCompatActivity {
     private static final String TAG =  "MyActivity";
-    private TextView exercise_date;
+    String exercise_date, temp;
+    String[] temp_date;
     private EditText exercise_name, exercise_cnt, exercise_set;
     private Button button;
+
+    String cal_sport_userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise);
 
+        Intent intent = getIntent();
+
+        cal_sport_userId="yys"; // userID 받아오기
+
         button = findViewById(R.id.ok_exercise);
-        exercise_date = (TextView)findViewById(R.id.input_date);
+        temp = intent.getStringExtra("datetext");
+        temp_date = temp.split("/"); // 2021/11/29 자르기
+        exercise_date = "" + temp_date[0];
+        exercise_date += (Integer.parseInt(temp_date[1]) < 10) ? "0" + temp_date[1] : temp_date[1];
+        exercise_date += (Integer.parseInt(temp_date[2]) < 10) ? "0" + temp_date[2] : temp_date[2];
+        //exercise_date = temp_date[0]+temp_date[1]+temp_date[2]; // 20211129로 넣기
         exercise_name = (EditText)findViewById(R.id.dlgName_exercise);
         exercise_cnt = (EditText)findViewById(R.id.dlgcnt_exercise);
         exercise_set = (EditText)findViewById(R.id.dlgset_exercise);
@@ -37,10 +49,11 @@ public class addExercise extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String DATE = exercise_date.toString();
-                final String NAME = exercise_name.getText().toString();
-                final String CNT = exercise_cnt.getText().toString();
-                final String SET = exercise_set.getText().toString();
+                String DATE = exercise_date;
+                String NAME = exercise_name.getText().toString();
+                String CNT = exercise_cnt.getText().toString();
+                String SET = exercise_set.getText().toString();
+                String USERID = cal_sport_userId;
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -55,12 +68,10 @@ public class addExercise extends AppCompatActivity {
 
                                 Toast.makeText(getApplicationContext(), "기록 완료", Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(addExercise.this, add_Final.class);
-                                intent.putExtra("cal_sport_date", DATE);
-                                intent.putExtra("cal_sport_name", NAME);
-                                intent.putExtra("cal_sport_cnt", CNT);
-                                intent.putExtra("cal_sport_set", SET);
+                                Intent intent = new Intent(addExercise.this, addList.class);
+                                intent.putExtra("cal_sport_date", temp);
                                 startActivity(intent);
+                                finish();
                             }
                             else{ //기록 실패한 경우
                                 Toast.makeText(getApplicationContext(), "기록 실패", Toast.LENGTH_SHORT).show();
@@ -73,11 +84,10 @@ public class addExercise extends AppCompatActivity {
                     }
                 };
 
-                ExerciseInsertRequest exerciseRequest = new ExerciseInsertRequest(DATE, NAME, CNT, SET,responseListener);
+                ExerciseInsertRequest exerciseRequest = new ExerciseInsertRequest(DATE, NAME, CNT, SET, USERID, responseListener);
                 RequestQueue queue= Volley.newRequestQueue(addExercise.this);
                 queue.add(exerciseRequest);
             }
         });
     }
-
 }
