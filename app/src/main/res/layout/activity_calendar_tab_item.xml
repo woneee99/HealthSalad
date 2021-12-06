@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_item_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="1"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/food_KCAL"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:gravity="center_horizontal"
+        android:text="음식: "
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/exercise_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:gravity="center_horizontal"
+        android:text="운동?:"
+        android:textSize="10dp" />
+
+    <LinearLayout
+        android:id="@+id/listview"
+        android:padding="3dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

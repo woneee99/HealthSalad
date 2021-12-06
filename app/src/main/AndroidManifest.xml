@@ -35,7 +35,7 @@
         <activity android:name=".addList"></activity>
         <activity android:name=".addFood"></activity>
         <activity android:name=".addExercise"></activity>
-        <activity android:name=".add_Final"></activity>
+        <activity android:name=".MainCalendarActivity"></activity>
     </application>
 
 </manifest>
