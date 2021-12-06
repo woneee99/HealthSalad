@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.banksalad.fragment.fragCal;
+
 import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragUser;
+import com.example.banksalad.fragment.fragCal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
