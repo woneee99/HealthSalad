@@ -100,7 +100,7 @@ public class addList extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target="http://10.0.2.2:8012/calsports_select.php";
+            target="http://10.0.2.2/calsports_select.php";
         }
 
         @Override

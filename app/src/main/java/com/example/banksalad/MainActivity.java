@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        Intent intent=new Intent(getApplicationContext(), CalendarActivity.class);
+                        startActivity(intent);
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
