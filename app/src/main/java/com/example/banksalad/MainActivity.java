@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigation);
 
         //첫 화면 띄우기
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,tabFragment1).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragCal).commitAllowingStateLoss();
 
         bottomNavigationView = findViewById(R.id.navigation);
 
