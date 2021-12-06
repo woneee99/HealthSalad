@@ -590,4 +590,3 @@ public class fragPlan extends Fragment {
     }
 
 }
-

@@ -59,7 +59,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
                 String cnt=sportCnt.getText().toString();
 
                 InsertData task=new InsertData();
-                task.execute("http://10.0.2.2/addsportdate.php",name,set,cnt);
+                task.execute("http://10.0.2.2:8012/addsportdate.php",name,set,cnt);
 
             }
         });
@@ -73,7 +73,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            target = "http://10.0.2.2/addsportdate.php";
+            target = "http://10.0.2.2:8012/addsportdate.php";
         }
 
         @Override

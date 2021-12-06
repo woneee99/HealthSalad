@@ -40,6 +40,7 @@ public class addFood extends AppCompatActivity {
     String mJsonString;
 
     String cal_food_userId;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,9 @@ public class addFood extends AppCompatActivity {
         setContentView(R.layout.activity_add_food);
 
         Intent intent = getIntent();
-
-        cal_food_userId = "yys"; // userID 받아오기
+        userID = intent.getStringExtra("userID");
+        cal_food_userId = userID; // userID 받아오기
+        // cal_food_userId = "yys";
 
         button = findViewById(R.id.ok_food);
         temp = intent.getStringExtra("datetext");
@@ -146,7 +148,7 @@ public class addFood extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/foodKcal.php";
+            target = "http://10.0.2.2:8012/foodKcal.php";
         }
 
         @Override

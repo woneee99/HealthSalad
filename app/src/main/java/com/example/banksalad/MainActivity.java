@@ -12,20 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.banksalad.fragment.fragWatch;
-import com.example.banksalad.fragment.fragPlan;
-import com.example.banksalad.fragment.fragUser;
 import com.example.banksalad.fragment.fragCal;
+import com.example.banksalad.fragment.fragWatch;
+import com.example.banksalad.fragment.fragUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import static androidx.constraintlayout.widget.StateSet.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Menu menu;
-
     Fragment fragCal;
     Fragment fragUser;
-    Fragment fragPlan;
     Fragment fragWatch;
 
     @Override
@@ -35,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
         fragCal = new fragCal();
         fragUser = new fragUser();
-        fragPlan = new fragPlan();
         fragWatch = new fragWatch();
 
         Intent intent = getIntent();
+        final String userID = intent.getStringExtra("userID");
         final String userName = intent.getStringExtra("userName");
         final String userBirth = intent.getStringExtra("userBirth");
         final String userHeight = intent.getStringExtra("userHeight");
@@ -57,7 +56,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.cal :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("userID",userID);
+                        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                        Fragment fragment2 = new fragCal();
+                        fragment2.setArguments(bundle1);
+                        transaction1.replace(R.id.frame_container, fragment2);
+                        transaction1.commit();
                         break;
                     case R.id.user:
                         Bundle bundle = new Bundle();
@@ -72,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        Intent intent1=new Intent(getApplicationContext(), CalendarActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
@@ -83,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     public void mOnClick(View v){
         Intent intent = new Intent(getApplicationContext(),addList.class);
         startActivity(intent);
