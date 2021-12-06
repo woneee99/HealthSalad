@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragUser;
-import com.example.banksalad.fragment.tabFragment1;
+import com.example.banksalad.fragment.fragCal;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -81,13 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
-    public void mOnClick(View v){
-        Intent intent = new Intent(getApplicationContext(),addList.class);
-        startActivity(intent);
-    }
     public void alterOnClick(View v){
         Intent intent = new Intent(getApplicationContext(),MyAlterActivity.class);
         startActivity(intent);
