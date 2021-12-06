@@ -469,6 +469,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             try {
 
+                //됐나..?
 //            progressDialog.dismiss();
                 Log.d(TAG, "Activity- response - " + s);
 
