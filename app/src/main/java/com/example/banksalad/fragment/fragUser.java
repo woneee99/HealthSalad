@@ -36,6 +36,18 @@ public class fragUser extends Fragment {
             String userWeight = getArguments().getString("userWeight");
             String userHeight = getArguments().getString("userHeight");
 
+            double uHeight = Double.parseDouble(userHeight)*0.01;
+            double uWeight = Double.parseDouble(userWeight);
+            double result = uWeight/(uHeight*uHeight);
+            if(result<=18.5){
+                BMI.setText("저체중");
+            }else if(result>18.5 && result<=22.9){
+                BMI.setText("정상");
+            }else if(result>=23 && result<=24.9){
+                BMI.setText("과체중");
+            }else{
+                BMI.setText("비만");
+            }
             name.setText(userName);
             birth.setText(userBirth);
             weight.setText(userWeight);

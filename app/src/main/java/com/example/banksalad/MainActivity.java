@@ -88,4 +88,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),addList.class);
         startActivity(intent);
     }
+    public void alterOnClick(View v){
+        Intent intent = new Intent(getApplicationContext(),MyAlterActivity.class);
+        startActivity(intent);
+    }
 }
