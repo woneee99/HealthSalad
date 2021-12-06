@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Menu menu;
 
-    Fragment tabFragment1;
+    Fragment fragCal;
     Fragment fragUser;
     Fragment fragPlan;
     Fragment fragWatch;
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabFragment1 = new tabFragment1();
+        fragCal = new fragCal();
         fragUser = new fragUser();
         fragPlan = new fragPlan();
         fragWatch = new fragWatch();
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.navigation);
 
         //첫 화면 띄우기
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,tabFragment1).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragCal).commitAllowingStateLoss();
 
         bottomNavigationView = findViewById(R.id.navigation);
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.cal :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new tabFragment1()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
                         break;
                     case R.id.user:
                         Bundle bundle = new Bundle();
