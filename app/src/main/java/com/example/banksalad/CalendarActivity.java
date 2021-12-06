@@ -505,7 +505,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "POST 에러~~: " + e);
             }
 
-            gridView.setAdapter(gridAdapter);
+            gridAdapter.notifyDataSetChanged();
         }
 
         @Override
