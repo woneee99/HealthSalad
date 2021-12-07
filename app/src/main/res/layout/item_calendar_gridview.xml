@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
+    android:layout_height="100dp"
     android:orientation="vertical">
 
 
@@ -10,22 +9,24 @@
         android:id="@+id/tv_item_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="top|left"
         android:text="1"
-        android:textSize="10sp" />
+        android:textColor="@color/black"
+        android:textSize="13sp" />
 
 
     <TextView
         android:id="@+id/tv_item_workset"
-        android:layout_width="wrap_content"
-        android:layout_height="15dp"
-        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
         android:text="0세트"
-        android:textSize="10dp" />
+        android:textColor="@color/black"
+        android:textSize="13sp" />
 
     <LinearLayout
         android:id="@+id/listview"
-        android:padding="3dp"
+        android:padding="1dp"
         android:orientation="vertical"
         android:visibility="visible"
         android:layout_width="match_parent"

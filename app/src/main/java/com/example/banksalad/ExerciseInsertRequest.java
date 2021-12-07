@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ExerciseInsertRequest extends StringRequest{
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://10.0.2.2/calsports.php";
+    final static  private String URL="http://10.0.2.2:8012/calsports.php";
     private Map<String,String> map;
 
     public ExerciseInsertRequest(String cal_sport_date, String cal_sport_name, String cal_sport_cnt, String cal_sport_set, String cal_sport_userID, Response.Listener<String>listener){

@@ -14,7 +14,7 @@
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="@color/color_21a4ff"
+            android:background="#cccccc"
             android:text="&lt;"
             android:textSize="30dp" />
 
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_21a4ff"
+            android:background="#cccccc"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:text="2021년 10월"
@@ -35,7 +35,7 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@color/color_21a4ff"
+            android:background="#cccccc"
             android:text="&gt;"
             android:textSize="30dp" />
 

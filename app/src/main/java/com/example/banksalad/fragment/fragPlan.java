@@ -109,6 +109,10 @@ public class fragPlan extends Fragment {
     private int showYear;
     private int showMon;
     private int showDay;
+    String pickdays;
+    String todays;
+    TextView todaytv;
+
 
     private LinearLayout container;
     String mJsonString;
@@ -142,7 +146,7 @@ public class fragPlan extends Fragment {
     ArrayList<fragPlan.DbItem> dbList;
     int lastidx;
     String user_id;
-    String pickdays;
+
 
     @Nullable
     @Override
@@ -188,6 +192,7 @@ public class fragPlan extends Fragment {
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
+        todays=pickdays;
 
 
         //현재 날짜 텍스트뷰에 뿌려줌
@@ -356,6 +361,8 @@ public class fragPlan extends Fragment {
                         dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
+
                     setCalendarDate(mCal.get(showMon), dayNum);
                     gridAdapter.notifyDataSetChanged();
                 }
@@ -392,6 +399,8 @@ public class fragPlan extends Fragment {
                         dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
+
                     setCalendarDate(mCal.get(Calendar.MONTH) + 2, dayNum);
                     gridAdapter.notifyDataSetChanged();
                 }
@@ -418,14 +427,15 @@ public class fragPlan extends Fragment {
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
 
-            //해당 날짜 텍스트 컬러,배경 변경
-            mCal = Calendar.getInstance();
-            //오늘 day 가져옴
-            Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-            String sToday = String.valueOf(today);
-            if (sToday.equals(getItem(position).getDay())) { //오늘 day 텍스트 컬러 변경
-                holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
+            if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
+                Log.d(TAG,"오늘컬러~~");
+                Log.d(TAG,"todays: "+todays+" posdays: "+posDays);
+                TextView textView=holder.tvItemDay;
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                todaytv=holder.tvItemDay;
             }
+
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
@@ -457,7 +467,7 @@ public class fragPlan extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/sportdate.php";
+            target = "http://10.0.2.2:8012/sportdate.php";
         }
 
         @Override
@@ -505,7 +515,7 @@ public class fragPlan extends Fragment {
                 Log.d(TAG, "POST 에러~~: " + e);
             }
 
-            gridView.setAdapter(gridAdapter);
+            gridAdapter.notifyDataSetChanged();
         }
 
         @Override
@@ -589,10 +599,10 @@ public class fragPlan extends Fragment {
             view1.setText(inp);
             view1.setTextSize(10);
             view1.setTextColor(Color.BLACK);
-            view1.setPadding(3, 3, 3, 3);
+            view1.setPadding(1, 3, 3, 3);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.gravity = Gravity.CENTER;
+            lp.gravity = Gravity.LEFT;
             view1.setLayoutParams(lp);
 
             container.addView(view1);

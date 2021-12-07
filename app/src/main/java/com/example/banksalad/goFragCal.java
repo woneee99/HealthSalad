@@ -116,7 +116,7 @@ public class goFragCal extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/user_info.php";
+            target = "http://10.0.2.2:8012/user_info.php";
         }
 
         @Override

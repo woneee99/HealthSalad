@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class FoodInsertRequest extends StringRequest {
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://10.0.2.2/calfood.php";
+    final static  private String URL="http://10.0.2.2:8012/calfood.php";
     private Map<String,String> map;
 
     public FoodInsertRequest(String cal_food_date, String cal_food_breakfast, String cal_food_lunch, String cal_food_dinner,  String cal_food_kcal, String cal_food_userID, Response.Listener<String>listener){
