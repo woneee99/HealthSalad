@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         fragCal = new fragCal();
         fragUser = new fragUser();
         fragWatch = new fragWatch();
+        fragPlan = new fragPlan();
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra("userID");
@@ -78,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        Bundle bundle3 = new Bundle();
+                        bundle3.putString("userID",userID);
+                        FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
+                        fragPlan.setArguments(bundle3);
+                        transaction3.replace(R.id.frame_container, fragPlan);
+                        transaction3.commit();
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
@@ -93,8 +99,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(),addList.class);
         startActivity(intent);
     }
-    public void alterOnClick(View v){
-        Intent intent = new Intent(getApplicationContext(),MyAlterActivity.class);
-        startActivity(intent);
-    }
+
 }

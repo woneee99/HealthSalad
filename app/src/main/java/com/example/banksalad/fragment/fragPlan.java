@@ -3,6 +3,7 @@ package com.example.banksalad.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.banksalad.AddSportPlanActivity;
+import com.example.banksalad.go;
 import com.example.banksalad.R;
 
 import org.json.JSONArray;
@@ -141,6 +143,7 @@ public class fragPlan extends Fragment {
     int lastidx;
     String user_id;
     String pickdays;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -148,9 +151,18 @@ public class fragPlan extends Fragment {
 
         dbList = new ArrayList<>();
         map=new HashMap<>();
+//        Intent addintent=new Intent(getActivity(),AddSportPlanActivity.class);//intent설정
 
-        user_id="hwangjuwon";
+
+        user_id = getArguments().getString("userID");//main에서 받아옴
+
+        Log.d(TAG,"go에서 받아오긴 할거임"+user_id);
+
+
+
         fragPlan.GetData task = new fragPlan.GetData();
+
+        Log.d(TAG,"넘겨주는 id"+user_id);
         task.execute(user_id);
 
 
@@ -219,6 +231,8 @@ public class fragPlan extends Fragment {
                     pickdays = "" + showYear;
                     pickdays += (showMon < 10) ? "0" + showMon : showMon;
                     pickdays += (pDay < 10) ? "0" + pDay : pDay;
+
+                    Log.d(TAG,"선택 날짜 "+pickdays);
                 }
             }
         });
@@ -320,9 +334,6 @@ public class fragPlan extends Fragment {
                         showMon = 12;
                     }
 
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    leftBtn = (Button) view.findViewById(R.id.pre_btn);
-
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
@@ -359,9 +370,6 @@ public class fragPlan extends Fragment {
                         showMon = 1;
                     }
 
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    rightBtn = (Button) view.findViewById(R.id.next_btn);
-
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
@@ -392,7 +400,7 @@ public class fragPlan extends Fragment {
             toAddBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(getActivity(),AddSportPlanActivity.class);
+                    Intent intent=new Intent(getActivity(), AddSportPlanActivity.class);
                     Log.d(TAG,"넘겨주는 idx값"+lastidx);
                     intent.putExtra("idxcnt",lastidx);
                     intent.putExtra("user_id",user_id);
@@ -476,7 +484,6 @@ public class fragPlan extends Fragment {
 
                     for (int i = 0; i < results.length(); ++i) {
                         JSONObject temp = results.getJSONObject(i);
-                        lastidx=max(lastidx,temp.getInt("idx"));//추가할때 기본키idx 갱신
 
                         String inpDay=temp.getString("sport_date");
                         String inp = temp.getString("sport_name")+" ";

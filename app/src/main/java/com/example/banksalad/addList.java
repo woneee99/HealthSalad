@@ -340,8 +340,8 @@ public class addList extends AppCompatActivity {
                     record_dinner_kcal.setText(": "+inp_dinner2+"kcal");
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Food 오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
+//                Toast.makeText(getApplicationContext(), "Food 오류", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"POST 에러: "+e);
             }
         }
 
