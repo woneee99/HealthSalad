@@ -146,7 +146,7 @@ public class addFood extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2:8012/foodKcal.php";
+            target = "http://10.0.2.2/foodKcal.php";
         }
 
         @Override

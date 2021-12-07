@@ -8,9 +8,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.banksalad.fragment.fragPlan;
+import com.example.banksalad.go;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,6 +32,7 @@ import static androidx.constraintlayout.widget.StateSet.TAG;
 
 public class AddSportPlanActivity extends AppCompatActivity {
 
+    private TextView dateTv;
     private Button addBtn;
     private EditText sportName;
     private EditText sportSet;
@@ -31,6 +41,8 @@ public class AddSportPlanActivity extends AppCompatActivity {
     String idx;
     String id;
 
+    Fragment fragPlan;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -38,16 +50,19 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         Intent calintent=getIntent(); //얘 뭐하는 애더라
 
+        dateTv=(TextView)findViewById(R.id.date_item);
         addBtn=(Button)findViewById(R.id.addBtn_sportP);
         sportName=(EditText)findViewById(R.id.add_sportName);
         sportSet=(EditText)findViewById(R.id.add_sportSet);
         sportCnt=(EditText)findViewById(R.id.add_sportCnt);
 
-        int tmpidx=calintent.getIntExtra("idxcnt",1);
-        idx=Integer.toString(++tmpidx);
-
+        fragPlan = new fragPlan();
+        idx="1";
         day=calintent.getStringExtra("dayString");
         id=calintent.getStringExtra("user_id");
+
+
+        dateTv.setText(day);
 
 
         addBtn.setOnClickListener(new View.OnClickListener(){
@@ -59,7 +74,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
                 String cnt=sportCnt.getText().toString();
 
                 InsertData task=new InsertData();
-                task.execute("http://10.0.2.2:8012/addsportdate.php",name,set,cnt);
+                task.execute("http://10.0.2.2/addsportdate.php",name,set,cnt);
 
             }
         });
@@ -72,17 +87,20 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            Log.d(TAG,"pre넘어옴");
             super.onPreExecute();
-            target = "http://10.0.2.2:8012/addsportdate.php";
+            target = "http://10.0.2.2/addsportdate.php";
         }
 
         @Override
         protected void onPostExecute(String s) {//디비에 있는거 다 받아옴
             super.onPostExecute(s);
+            Log.d(TAG,"post받아옴"+s);
 
             Log.d(TAG,"response--"+s);
 
-            Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+            Intent intent=new Intent(getApplicationContext(),go.class);
+            intent.putExtra("userID",id);
             startActivity(intent);
 
             finish();
@@ -90,6 +108,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+            Log.d(TAG,"DB받아오는 쪽 ");
 
             String name=(String)params[1];
             String set=(String)params[2];

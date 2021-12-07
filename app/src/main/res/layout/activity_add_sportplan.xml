@@ -2,9 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/addSp">
 
     <TextView
+        android:id="@+id/date_item"
         android:text="2021년 11월 30일"
         android:textSize="30dp"
         android:padding="5dp"

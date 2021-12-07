@@ -31,21 +31,22 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class goFragCal extends AppCompatActivity {
+public class go extends AppCompatActivity {
     private static final String TAG = "";
 
     String mJsonString;
     BottomNavigationView bottomNavigationView;
+    Menu menu;
     Fragment fragCal;
     Fragment fragUser;
     Fragment fragWatch;
+    Fragment fragPlan;
 
     String userID;
     String userName;
     String userBirth;
     String userHeight;
     String userWeight;
-    String userID1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +54,29 @@ public class goFragCal extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        userID1 = intent.getStringExtra("userID");
+        userID = intent.getStringExtra("userID");
 
         Bundle bundle1 = new Bundle();
-        bundle1.putString("userID",userID1);
+        bundle1.putString("userID",userID);
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-        Fragment fragment2 = new fragCal();
+        Fragment fragment2 = new fragPlan();
         fragment2.setArguments(bundle1);
         transaction1.replace(R.id.frame_container, fragment2);
         transaction1.commit();
 
+        fragPlan = new fragPlan();
         fragCal = new fragCal();
         fragUser = new fragUser();
         fragWatch = new fragWatch();
 
         GetDataUser userTask = new GetDataUser();
-        userTask.execute(userID1);
+        userTask.execute(userID);
 
         bottomNavigationView = findViewById(R.id.navigation);
+        //첫화면
+        bottomNavigationView.setSelectedItemId(R.id.plan);
+
+        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragPlan).commitAllowingStateLoss();
 
         //case 함수를 통해 클릭 받을 때마다 화면 변경하기
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -99,7 +105,12 @@ public class goFragCal extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
+                        Bundle bundle3 = new Bundle();
+                        bundle3.putString("userID",userID);
+                        FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
+                        fragPlan.setArguments(bundle3);
+                        transaction3.replace(R.id.frame_container, fragPlan);
+                        transaction3.commit();
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();
@@ -108,15 +119,16 @@ public class goFragCal extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
-    private class GetDataUser extends AsyncTask<String, Void, String> { // user 데이터 SELECT
+    private class GetDataUser extends AsyncTask<String, Void, String> {
         String errorString = null;
         String target;
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/user_info.php";
+            target = "http://10.0.2.2/plan_info.php";
         }
 
         @Override
@@ -130,6 +142,7 @@ public class goFragCal extends AppCompatActivity {
 
             try {
                 if (s == null) {
+                    //textview("X");
                 } else {
                     mJsonString = s;
 
@@ -137,7 +150,7 @@ public class goFragCal extends AppCompatActivity {
                     JSONArray results = jsonObject.getJSONArray("response");
                     for (int i = 0; i < results.length(); ++i) {
                         JSONObject temp = results.getJSONObject(i);
-                        if (userID1.equals(temp.getString("userID"))) {
+                        if (userID.equals(temp.getString("userID"))) {
                             userName = temp.getString("userName");
                             userWeight = temp.getString("userWeight");
                             userBirth = temp.getString("userBirth");
@@ -148,6 +161,7 @@ public class goFragCal extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "오류", Toast.LENGTH_SHORT).show();
+                //Log.d(TAG,"POST 에러: "+e);
             }
         }
 
