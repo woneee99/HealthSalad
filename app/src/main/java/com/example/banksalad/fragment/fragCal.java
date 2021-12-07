@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.banksalad.MainCalendarActivity;
 import com.example.banksalad.R;
 import com.example.banksalad.addList;
 
@@ -51,7 +49,6 @@ public class fragCal extends Fragment {
     Map<String, String> map2= new HashMap<String, String>(); //운동 체크 map
     String cal_sport_userId;
     String cal_food_userId;
-    private EditText et_id;
 
     /**
      * 연/월 텍스트뷰
@@ -171,8 +168,10 @@ public class fragCal extends Fragment {
 
         dbList = new ArrayList<>();
 
-        cal_sport_userId="hwangjuwon";
-        cal_food_userId="hwangjuwon";
+        String userID = getActivity().getIntent().getStringExtra("userID");
+
+        cal_food_userId = userID;
+        cal_sport_userId = userID;
 
         fragCal.GetDataFoodKcal taskKcal = new fragCal.GetDataFoodKcal();
         taskKcal.execute(cal_food_userId);
@@ -351,7 +350,7 @@ public class fragCal extends Fragment {
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-                    //1일 - 요일 매칭 시키기 위해 공백 add
+//1일 - 요일 매칭 시키기 위해 공백 add
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -413,9 +412,7 @@ public class fragCal extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(getActivity(), addList.class);
-                    Log.d(TAG,"넘겨주는 idx값"+lastidx);
-                    intent.putExtra("idxcnt",lastidx);
-                    intent.putExtra("dayString",pickdays);
+                    intent.putExtra("userID",cal_sport_userId); // id 넘기기
                     startActivity(intent);
                 }
             });
@@ -458,7 +455,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2:/calfood_select.php";
+            target = "http://10.0.2.2/calfood_select.php";
         }
 
         @Override

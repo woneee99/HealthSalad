@@ -30,12 +30,10 @@
         </activity>
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".joinActivity" ></activity>
-        <activity android:name=".CalendarActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".addList"></activity>
         <activity android:name=".addFood"></activity>
         <activity android:name=".addExercise"></activity>
-        <activity android:name=".MainCalendarActivity"></activity>
         <activity android:name=".AddSportPlanActivity"></activity>
     </application>
 

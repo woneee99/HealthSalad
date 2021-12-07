@@ -1,12 +1,12 @@
-package com.example.banksalad;
-
-import static androidx.constraintlayout.widget.StateSet.TAG;
+package com.example.banksalad.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,12 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.banksalad.AddSportPlanActivity;
+import com.example.banksalad.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,12 +43,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainCalendarActivity extends AppCompatActivity {
-    Map<String, Double> map= new HashMap<String, Double>(); //음식 칼로리 map
-    Map<String, String> map2= new HashMap<String, String>(); //운동 체크 map
-    String cal_sport_userId;
-    String cal_food_userId;
+import static androidx.constraintlayout.widget.StateSet.TAG;
+import static java.lang.Integer.max;
 
+public class fragPlan extends Fragment {
+    private View view;
     /**
      * 연/월 텍스트뷰
      */
@@ -51,7 +55,7 @@ public class MainCalendarActivity extends AppCompatActivity {
     /**
      * 그리드뷰 어댑터
      */
-    private GridAdapter gridAdapter;
+    private fragPlan.GridAdapter gridAdapter;
 
     /**
      * 일 저장 할 리스트
@@ -59,20 +63,7 @@ public class MainCalendarActivity extends AppCompatActivity {
     private class DayItem {
         private String Type;
         private String Day;
-        private Double Kcal;
         private String Set;
-
-        public void setType(String type) {
-            Type = type;
-        }
-
-        public void setDay(String day) {
-            Day = day;
-        }
-
-        public void setKcal(Double kcal) {
-            Kcal = kcal;
-        }
 
         public void setSet(String set) {
             Set = set;
@@ -86,22 +77,18 @@ public class MainCalendarActivity extends AppCompatActivity {
             return Day;
         }
 
-        public Double getKcal() {
-            return Kcal;
-        }
-
         public String getSet() {
             return Set;
         }
 
-        public DayItem(String type, String day, Double kcal, String set) {
+        public DayItem(String type, String day, String set) {
             Type = type;
             Day = day;
-            Kcal = kcal;
             Set = set;
         }
     }
-    private ArrayList<DayItem> dayList;
+    private ArrayList<fragPlan.DayItem> dayList;
+    private Map<String,Integer> map;
 
     /**
      * 그리드뷰
@@ -111,7 +98,7 @@ public class MainCalendarActivity extends AppCompatActivity {
     /**
      * 왼쪽, 오른쪽 버튼
      */
-    private Button leftBtn, rightBtn,toAddBtn;
+    private Button leftBtn, rightBtn, toAddBtn;
 
     /**
      * 캘린더 변수
@@ -126,7 +113,7 @@ public class MainCalendarActivity extends AppCompatActivity {
 
     private class DbItem{
         String day;
-        String kcal;
+        String sport;
 
         public String getDay() {
             return day;
@@ -136,53 +123,46 @@ public class MainCalendarActivity extends AppCompatActivity {
             this.day = day;
         }
 
-        public String getKcal() {
-            return kcal;
+        public String getSport() {
+            return sport;
         }
 
-        public void setSport(String kcal) {
-            this.kcal = kcal;
+        public void setSport(String sport) {
+            this.sport = sport;
         }
 
-        public DbItem(String day, String kcal) {
+        public DbItem(String day, String sport) {
             this.day = day;
-            this.kcal = kcal;
+            this.sport = sport;
         }
     }
 
-    ArrayList<DbItem> dbList;
+    ArrayList<fragPlan.DbItem> dbList;
     int lastidx;
+    String user_id;
     String pickdays;
-    TextView tvvitem;
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar_tab);
-
-        Log.d(TAG,"캘린더 돌아옴");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.activity_calendar, container, false);
 
         dbList = new ArrayList<>();
+        map=new HashMap<>();
 
-        cal_sport_userId="hwangjuwon";
-        cal_food_userId="hwangjuwon";
+        user_id="hwangjuwon";
+        fragPlan.GetData task = new fragPlan.GetData();
+        task.execute(user_id);
 
-        GetDataFoodKcal taskKcal = new GetDataFoodKcal();
-        taskKcal.execute(cal_food_userId);
 
-        GetDataExerciseCheck taskexercise = new GetDataExerciseCheck();
-        taskexercise.execute(cal_sport_userId);
-
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        gridView = (GridView) findViewById(R.id.gridview);
-        leftBtn = (Button) findViewById(R.id.pre_btn);
-        rightBtn = (Button) findViewById(R.id.next_btn);
-        toAddBtn=(Button)findViewById(R.id.btnrecord);
+        tvDate = (TextView) view.findViewById(R.id.tv_date);
+        gridView = (GridView) view.findViewById(R.id.gridview);
+        leftBtn = (Button) view.findViewById(R.id.pre_btn);
+        rightBtn = (Button) view.findViewById(R.id.next_btn);
+        toAddBtn=(Button)view.findViewById(R.id.toAddBtn);
 
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
-
         //연,월,일을 따로 저장
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
@@ -190,25 +170,27 @@ public class MainCalendarActivity extends AppCompatActivity {
 
         showYear = Integer.parseInt(curYearFormat.format(date));
         showMon = Integer.parseInt(curMonthFormat.format(date));
-        showDay = Integer.parseInt(curDayFormat.format(date));
+        showDay=Integer.parseInt(curDayFormat.format(date));
 
         //나중에 추가페이지에 넘겨줄 선택 날짜 String
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
 
+
         //현재 날짜 텍스트뷰에 뿌려줌
         tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
 
         //gridview 요일 표시
         dayList = new ArrayList<>();
-        dayList.add(new DayItem("0", "일", 0.0, ""));
-        dayList.add(new DayItem("0", "월", 0.0, ""));
-        dayList.add(new DayItem("0", "화", 0.0, ""));
-        dayList.add(new DayItem("0", "수", 0.0, ""));
-        dayList.add(new DayItem("0", "목", 0.0, ""));
-        dayList.add(new DayItem("0", "금", 0.0, ""));
-        dayList.add(new DayItem("0", "토", 0.0, ""));
+        dayList.add(new fragPlan.DayItem("0", "",  ""));
+        dayList.add(new fragPlan.DayItem("0", "일",  ""));
+        dayList.add(new fragPlan.DayItem("0", "월",  ""));
+        dayList.add(new fragPlan.DayItem("0", "화",  ""));
+        dayList.add(new fragPlan.DayItem("0", "수",  ""));
+        dayList.add(new fragPlan.DayItem("0", "목",  ""));
+        dayList.add(new fragPlan.DayItem("0", "금",  ""));
+        dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
         mCal = Calendar.getInstance();
 
@@ -217,28 +199,30 @@ public class MainCalendarActivity extends AppCompatActivity {
         int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         //1일 - 요일 매칭 시키기 위해 공백 add
 
+        dayList.add(new fragPlan.DayItem("0", "1주차", ""));
         for (int i = 1; i < dayNum; i++) {
-            dayList.add(new DayItem("0", "", 0.0, ""));
+            dayList.add(new fragPlan.DayItem("0", "",  ""));
         }
         setCalendarDate(mCal.get(Calendar.MONTH) + 1, dayNum);
 
 
-        gridAdapter = new GridAdapter(getApplicationContext(), dayList);
+        gridAdapter = new fragPlan.GridAdapter(getActivity(), dayList);
         gridView.setAdapter(gridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a_parent, View a_view, int a_position, long a_id) {
-                DayItem item = gridAdapter.getItem(a_position);
-                int pDay=Integer.parseInt(item.getDay());
+                fragPlan.DayItem item = gridAdapter.getItem(a_position);
+                if(!dayList.get(a_position).getType().equals("0")) {
+                    int pDay = Integer.parseInt(item.getDay());
 
-                pickdays=""+showYear;
-                pickdays+=(showMon<10)? "0"+showMon:showMon;
-                pickdays+=(pDay<10)? "0"+pDay:pDay;
+                    pickdays = "" + showYear;
+                    pickdays += (showMon < 10) ? "0" + showMon : showMon;
+                    pickdays += (pDay < 10) ? "0" + pDay : pDay;
+                }
             }
         });
-
-
+        return view;
     }//onCreate()
 
     /**
@@ -250,16 +234,21 @@ public class MainCalendarActivity extends AppCompatActivity {
         mCal.set(Calendar.MONTH, month - 1);
 
         for (int i = 0, j = dayNum; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++, j++) {
-            dayList.add(new DayItem("1", "" + (i + 1), 0.0, "20세트"));
+            dayList.add(new fragPlan.DayItem("1", "" + (i + 1), "0세트"));
+            if (j % 7 == 0)
+                dayList.add(new fragPlan.DayItem("0", "" + ((j / 8) + 2) + "주차", ""));//j:처음=1, 칸 수
         }
+
     }
 
     /**
      * 그리드뷰 어댑터
      */
     private class GridAdapter extends BaseAdapter {
-        private final List<DayItem> list;
+
+        private final List<fragPlan.DayItem> list;
         private final LayoutInflater inflater;
+
 
         /**
          * 생성자
@@ -267,7 +256,7 @@ public class MainCalendarActivity extends AppCompatActivity {
          * @param context
          * @param list
          */
-        public GridAdapter(Context context, List<DayItem> list) {
+        public GridAdapter(Context context, List<fragPlan.DayItem> list) {
             this.list = list;
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -278,7 +267,7 @@ public class MainCalendarActivity extends AppCompatActivity {
         }
 
         @Override
-        public DayItem getItem(int position) {
+        public fragPlan.DayItem getItem(int position) {
             return list.get(position);
         }
 
@@ -289,25 +278,10 @@ public class MainCalendarActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
 
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.activity_calendar_tab_item, parent, false);
-//                listView=inflater.inflate()
-                holder = new ViewHolder();
+            fragPlan.ViewHolder holder = null;
 
-                holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
-                holder.tvItemfoodKCAL = (TextView) convertView.findViewById(R.id.food_KCAL);
-                holder.tvItemExercise = (TextView) convertView.findViewById(R.id.exercise_tv);
-                holder.tvItemWorks = (LinearLayout) convertView.findViewById(R.id.listview);
-                convertView.setTag(holder);
 
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            String result_kcal="";
-            String result_exercise="";
             String posDays="0";
             if(!dayList.get(position).getType().equals("0")){
                 int pDay=Integer.parseInt(dayList.get(position).getDay());
@@ -315,21 +289,28 @@ public class MainCalendarActivity extends AppCompatActivity {
                 posDays+=(showMon<10)? "0"+showMon:showMon;
                 posDays+=(pDay<10)? "0"+pDay:pDay;
 
-                if(map.containsKey(posDays)==true){
-                    result_kcal = Double.toString(map.get(posDays));
-                }else{
-                    result_kcal="";
+                if(map.containsKey(posDays)==true) {
+                    Log.d(TAG,map.get(posDays)+"");
+                    dayList.get(position).setSet(map.get(posDays).toString()+"세트");
                 }
 
-                if(map2.containsKey(posDays)==true){
-                    result_exercise = map2.get(posDays);
-                }else{
-                    result_exercise="";
-                }
             }
 
-            //holder.bind(dayList.get(position).getDay(), result_kcal, dayList.get(position).getSet());
-            holder.bind(dayList.get(position).getDay(), result_kcal, result_exercise);
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.item_calendar_gridview, parent, false);
+//                listView=inflater.inflate()
+                holder = new fragPlan.ViewHolder();
+
+                holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
+                holder.tvItemWorkSet = (TextView) convertView.findViewById(R.id.tv_item_workset);
+                holder.tvItemWorks = (LinearLayout) convertView.findViewById(R.id.listview);
+                convertView.setTag(holder);
+
+            } else {
+                holder = (fragPlan.ViewHolder) convertView.getTag();
+            }
+            holder.bind(dayList.get(position).getDay(), dayList.get(position).getSet());
+
 
             leftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -339,8 +320,8 @@ public class MainCalendarActivity extends AppCompatActivity {
                         showMon = 12;
                     }
 
-                    tvDate = (TextView) findViewById(R.id.tv_date);
-                    leftBtn = (Button) findViewById(R.id.pre_btn);
+                    tvDate = (TextView) view.findViewById(R.id.tv_date);
+                    leftBtn = (Button) view.findViewById(R.id.pre_btn);
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -350,16 +331,18 @@ public class MainCalendarActivity extends AppCompatActivity {
                     tvDate.setText(showYear + "/" + showMon);
 
                     dayList.clear();
-                    dayList.add(new DayItem("0", "일", 0.0, ""));
-                    dayList.add(new DayItem("0", "월", 0.0, ""));
-                    dayList.add(new DayItem("0", "화", 0.0, ""));
-                    dayList.add(new DayItem("0", "수", 0.0, ""));
-                    dayList.add(new DayItem("0", "목", 0.0, ""));
-                    dayList.add(new DayItem("0", "금", 0.0, ""));
-                    dayList.add(new DayItem("0", "토", 0.0, ""));
+                    dayList.add(new fragPlan.DayItem("0", "",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "일",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "월",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "화",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "수",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "목",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "금",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
+                    dayList.add(new fragPlan.DayItem("0", "1주차",  ""));
                     for (int i = 1; i < dayNum; i++) {
-                        dayList.add(new DayItem("0", "", 0.0, ""));
+                        dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
                     setCalendarDate(mCal.get(showMon), dayNum);
@@ -370,13 +353,14 @@ public class MainCalendarActivity extends AppCompatActivity {
             rightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if (++showMon == 13) {
                         showYear++;
                         showMon = 1;
                     }
 
-                    tvDate = (TextView) findViewById(R.id.tv_date);
-                    rightBtn = (Button) findViewById(R.id.next_btn);
+                    tvDate = (TextView) view.findViewById(R.id.tv_date);
+                    rightBtn = (Button) view.findViewById(R.id.next_btn);
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -386,16 +370,18 @@ public class MainCalendarActivity extends AppCompatActivity {
                     tvDate.setText(showYear + "/" + showMon);
 
                     dayList.clear();
-                    dayList.add(new DayItem("0", "일", 0.0, ""));
-                    dayList.add(new DayItem("0", "월", 0.0, ""));
-                    dayList.add(new DayItem("0", "화", 0.0, ""));
-                    dayList.add(new DayItem("0", "수", 0.0, ""));
-                    dayList.add(new DayItem("0", "목", 0.0, ""));
-                    dayList.add(new DayItem("0", "금", 0.0, ""));
-                    dayList.add(new DayItem("0", "토", 0.0, ""));
+                    dayList.add(new fragPlan.DayItem("0", "",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "일",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "월",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "화",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "수",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "목", ""));
+                    dayList.add(new fragPlan.DayItem("0", "금",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
+                    dayList.add(new fragPlan.DayItem("0", "1주차",  ""));
                     for (int i = 1; i < dayNum; i++) {
-                        dayList.add(new DayItem("0", "", 0.0, ""));
+                        dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
                     setCalendarDate(mCal.get(Calendar.MONTH) + 2, dayNum);
@@ -406,9 +392,10 @@ public class MainCalendarActivity extends AppCompatActivity {
             toAddBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(getApplicationContext(), addList.class);
+                    Intent intent=new Intent(getActivity(),AddSportPlanActivity.class);
                     Log.d(TAG,"넘겨주는 idx값"+lastidx);
                     intent.putExtra("idxcnt",lastidx);
+                    intent.putExtra("user_id",user_id);
                     intent.putExtra("dayString",pickdays);
                     startActivity(intent);
                 }
@@ -422,22 +409,32 @@ public class MainCalendarActivity extends AppCompatActivity {
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-//            if(showYear==curYearFormat)
-
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
             //오늘 day 가져옴
             Integer today = mCal.get(Calendar.DAY_OF_MONTH);
             String sToday = String.valueOf(today);
-            if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
+            if (sToday.equals(getItem(position).getDay())) { //오늘 day 텍스트 컬러 변경
                 holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
             }
-
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
             container = holder.tvItemWorks;
+
+
+
+
+            if (!dayList.get(position).getType().equals("0")) {
+                Log.d(TAG, "반복문 넘어옴~~, dbsize: "+dbList.size());
+                for (int i = 0; i < dbList.size(); i++) {
+                    if(posDays.equals(dbList.get(i).getDay())) {
+                        textview(dbList.get(i).getSport());
+                    }
+                }
+            }
+
 
             return convertView;
         }
@@ -445,14 +442,14 @@ public class MainCalendarActivity extends AppCompatActivity {
 
     }//adaptor끝
 
-    private class GetDataFoodKcal extends AsyncTask<String, Void, String> { //칼로리 계산
+    private class GetData extends AsyncTask<String, Void, String> {
 
         String errorString = null;
         String target;
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calfood_select.php";
+            target = "http://10.0.2.2/sportdate.php";
         }
 
         @Override
@@ -470,7 +467,7 @@ public class MainCalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "Activity- response - " + s);
 
                 if (s == null) {
-                    //textview("안되네요~~~");
+                    textview("안되네요~~~");
                 } else {
                     mJsonString = s;
 
@@ -479,20 +476,26 @@ public class MainCalendarActivity extends AppCompatActivity {
 
                     for (int i = 0; i < results.length(); ++i) {
                         JSONObject temp = results.getJSONObject(i);
+                        lastidx=max(lastidx,temp.getInt("idx"));//추가할때 기본키idx 갱신
 
-                        String inpDay = temp.getString("cal_food_date");
-                        //String inp = temp.getString("cal_food_kcal");
+                        String inpDay=temp.getString("sport_date");
+                        String inp = temp.getString("sport_name")+" ";
+                        inp += temp.getString("sport_set");
+                        dbList.add(new fragPlan.DbItem(inpDay,inp));
 
-                        Double dd = Double.parseDouble(temp.getString("cal_food_kcal"));
+                        Log.d(TAG,"받아온 세트! "+temp.getString("sport_set"));
+
+                        int mSet=temp.getInt("sport_set");
                         if(map.containsKey(inpDay)==true){
-                            Double tt = map.get(inpDay);
-                            map.remove(inpDay);
-                            map.put(inpDay, tt +Double.parseDouble(temp.getString("cal_food_kcal")));
-                        } else{ map.put(temp.getString("cal_food_date"), Double.parseDouble(temp.getString("cal_food_kcal"))); }
+                            mSet+=(Integer)map.get(inpDay);
+                        }
+                        map.put(inpDay,mSet);
+
+                        Log.d(TAG,"하나 Day: "+inpDay+"내용: "+inp);
                     }
                 }
             } catch (JSONException e) {
-                Log.d(TAG, "POST 에러: " + e);
+                Log.d(TAG, "POST 에러~~: " + e);
             }
 
             gridView.setAdapter(gridAdapter);
@@ -500,108 +503,11 @@ public class MainCalendarActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
             String id=params[0];
-            String postParam="cal_food_userID="+id;
+            String postParam="user_id="+id;
 
-            try {
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.connect();
-
-                OutputStream outputStream=httpURLConnection.getOutputStream();
-                outputStream.write(postParam.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode=httpURLConnection.getResponseCode();
-                Log.d(TAG,"response code - "+responseStatusCode);
-
-                InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else{
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                String line;//temp가 line임
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return sb.toString().trim();
-
-            } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
-                errorString = e.toString();
-            }
-            return null;
-        }
-    }
-
-    private class GetDataExerciseCheck extends AsyncTask<String, Void, String> { //운동체크
-
-        String errorString = null;
-        String target;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://10.0.2.2/calsports_select.php";
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            try {
-
-//            progressDialog.dismiss();
-                Log.d(TAG, "Activity- response - " + s);
-
-                if (s == null) {
-                    //textview("안되네요~~~");
-                } else {
-                    mJsonString = s;
-
-                    JSONObject jsonObject = new JSONObject(s);
-                    JSONArray results = jsonObject.getJSONArray("response");
-
-                    for (int i = 0; i < results.length(); ++i) {
-                        JSONObject temp = results.getJSONObject(i);
-
-                        map2.put(temp.getString("cal_sport_date"), temp.getString("cal_sport_name"));
-                    }
-                }
-            } catch (JSONException e) {
-                Log.d(TAG, "POST 에러: " + e);
-            }
-
-            gridView.setAdapter(gridAdapter);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String id=params[0];
-            String postParam="cal_sport_userID="+id;
+            Log.d(TAG,"보낼거: "+postParam);
 
             try {
                 URL url = new URL(target);
@@ -655,18 +561,38 @@ public class MainCalendarActivity extends AppCompatActivity {
 
     private class ViewHolder {
         TextView tvItemDay;
-        TextView tvItemfoodKCAL;
-        TextView tvItemExercise;
+        TextView tvItemWorkSet;
         LinearLayout tvItemWorks;
 
-        public void bind(String day, String kcal, String set) {
+        public void bind(String day, String set) {
             tvItemDay.setText(day);
-
-            if(kcal.equals(""))tvItemfoodKCAL.setText(kcal);
-            else tvItemfoodKCAL.setText(kcal+"kcal");
-
-            if(set.equals("")) tvItemExercise.setText(set);
-            else tvItemExercise.setText("DONE");
+            tvItemWorkSet.setText(set);
         }
     }
+
+    public void textview(String a) {
+        if (a != null) {
+            TextView view1 = new TextView(getActivity());
+
+            String inp;
+            if (a.length() > 10) {
+                inp = a.substring(2, 10);
+            } else inp = a;
+
+            view1.setText(inp);
+            view1.setTextSize(10);
+            view1.setTextColor(Color.BLACK);
+            view1.setPadding(3, 3, 3, 3);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.CENTER;
+            view1.setLayoutParams(lp);
+
+            container.addView(view1);
+        } else {
+            Log.d(TAG, "NULL인가벼~~~~~");
+        }
+
+    }
+
 }

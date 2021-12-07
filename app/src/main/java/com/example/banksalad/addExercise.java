@@ -25,15 +25,15 @@ public class addExercise extends AppCompatActivity {
     private Button button;
 
     String cal_sport_userId;
-
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_exercise);
 
         Intent intent = getIntent();
-
-        cal_sport_userId="hwangjuwon"; // userID 받아오기
+        userID = intent.getStringExtra("userID");
+        cal_sport_userId="userID"; // userID 받아오기
 
         button = findViewById(R.id.ok_exercise);
         temp = intent.getStringExtra("datetext");

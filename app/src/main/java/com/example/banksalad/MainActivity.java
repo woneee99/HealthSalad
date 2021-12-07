@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.banksalad.fragment.fragCal;
+import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragCal;
     Fragment fragUser;
     Fragment fragWatch;
+    Fragment fragPlan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         fragWatch = new fragWatch();
 
         Intent intent = getIntent();
+        final String userID = intent.getStringExtra("userID");
         final String userName = intent.getStringExtra("userName");
         final String userBirth = intent.getStringExtra("userBirth");
         final String userHeight = intent.getStringExtra("userHeight");
@@ -55,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.cal :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
+                        Bundle bundle1 = new Bundle();
+                        bundle1.putString("userID",userID);
+                        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
+                        fragCal.setArguments(bundle1);
+                        transaction1.replace(R.id.frame_container, fragCal);
+                        transaction1.commit();
                         break;
                     case R.id.user:
                         Bundle bundle = new Bundle();
@@ -70,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        Intent intent1=new Intent(getApplicationContext(), CalendarActivity.class);
-                        startActivity(intent1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();

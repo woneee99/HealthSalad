@@ -43,6 +43,7 @@ public class addList extends AppCompatActivity {
 
     String cal_sport_userId;
     String cal_food_userId;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,11 @@ public class addList extends AppCompatActivity {
         record_lunch_kcal = (TextView) findViewById(R.id.lunch_kcal);
         record_dinner_kcal = (TextView) findViewById(R.id.dinner_kcal);
 
-        cal_sport_userId="hwangjuwon";
-        cal_food_userId="hwangjuwon";
+        userID = intent.getStringExtra("userID");
+//        cal_sport_userId="yys";
+//        cal_food_userId="yys";
+        cal_sport_userId = userID;
+        cal_food_userId = userID;
 
         if (date != null || food_data != null) {
             if (date != null) {
@@ -114,18 +118,21 @@ public class addList extends AppCompatActivity {
                 }
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
+            ////////////
         }
     }
 
     public void mOnClickfood(View v) { // 음식 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addFood.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
+        intent.putExtra("userID", userID); // id 넘기기
         startActivity(intent);
     }
 
     public void mOnClickexercise(View v) { //운동 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addExercise.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
+        intent.putExtra("userID", userID); // id 넘기기
         startActivity(intent);
     }
 

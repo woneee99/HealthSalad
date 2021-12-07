@@ -11,6 +11,9 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.example.banksalad.fragment.fragPlan;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -36,7 +39,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sportplan);
 
-        Intent calintent=getIntent(); //얘 뭐하는 애더라
+        Intent calintent=getIntent();
 
         addBtn=(Button)findViewById(R.id.addBtn_sportP);
         sportName=(EditText)findViewById(R.id.add_sportName);
@@ -82,10 +85,8 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
             Log.d(TAG,"response--"+s);
 
-            Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
-            startActivity(intent);
-
-            finish();
+            getSupportFragmentManager().beginTransaction().replace(R.id.addSp,new fragPlan()).commit();
+            //finish();
         }
 
         @Override
