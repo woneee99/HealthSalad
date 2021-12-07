@@ -102,9 +102,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
             Intent intent=new Intent(getApplicationContext(),go.class);
             intent.putExtra("userID",id);
             startActivity(intent);
-            //FragmentTransaction transaction3 = getSupportFragmentManager().beginTransaction();
-            //transaction3.replace(R.id.addSp, fragPlan);
-            //transaction3.commit();
+
             finish();
         }
 

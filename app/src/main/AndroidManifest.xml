@@ -34,6 +34,7 @@
         <activity android:name=".addList"></activity>
         <activity android:name=".addFood"></activity>
         <activity android:name=".AddSportPlanActivity"></activity>
+        <activity android:name=".goFragCal"></activity>
         <activity android:name=".go"></activity>
         <activity android:name=".addExercise"></activity>
     </application>

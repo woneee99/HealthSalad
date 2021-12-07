@@ -28,14 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rounded">
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름"
+                android:text="이름: "
                 android:textStyle="bold"
-                android:textSize="25dp"
+                android:textSize="18dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="25dp"/>
 
@@ -46,8 +47,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="25dp"
                 android:text=""
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/third"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="생년월일: "
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="25dp"/>
             <TextView
@@ -71,8 +71,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="25dp"
                 android:text=""
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/seccond"
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="키: "
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="25dp"/>
             <TextView
@@ -97,8 +96,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="25dp"
                 android:text=""
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/fourth"
@@ -112,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:text="현재 체중: "
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="25dp"/>
             <TextView
@@ -122,8 +120,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="25dp"
                 android:text=""
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/fifth"
@@ -137,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:text="BMI: "
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="25dp"/>
             <TextView
@@ -147,21 +144,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="25dp"
                 android:text=""
-                android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textSize="18dp"/>
         </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="수정하기"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:textColor="#0066FF"
-        android:textStyle="bold"
-        android:textSize="15dp"
-        android:background="@drawable/btn_rounded"
-        android:onClick="alterOnClick"/>
-
 </LinearLayout>

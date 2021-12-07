@@ -2,6 +2,7 @@ package com.example.banksalad.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -127,6 +129,9 @@ public class fragCal extends Fragment {
     private int showMon;
     private int showDay;
 
+    String pickdays;
+    String todays;
+
     private LinearLayout container;
     String mJsonString;
 
@@ -158,7 +163,6 @@ public class fragCal extends Fragment {
 
     ArrayList<fragCal.DbItem> dbList;
     int lastidx;
-    String pickdays;
     TextView tvvitem;
     @Nullable
     @Override
@@ -202,6 +206,7 @@ public class fragCal extends Fragment {
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
+        todays = pickdays;
 
         //현재 날짜 텍스트뷰에 뿌려줌
         tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
@@ -298,7 +303,7 @@ public class fragCal extends Fragment {
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.activity_calendar_tab_item, parent, false);
-
+//                listView=inflater.inflate()
                 holder = new fragCal.ViewHolder();
 
                 holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
@@ -339,7 +344,6 @@ public class fragCal extends Fragment {
             leftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"넘어오긴한다?");
                     if (--showMon == 0) {
                         showYear--;
                         showMon = 12;
@@ -349,8 +353,6 @@ public class fragCal extends Fragment {
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
 //1일 - 요일 매칭 시키기 위해 공백 add
-
-                    Log.d(TAG,showYear + "/" + showMon);
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -375,13 +377,10 @@ public class fragCal extends Fragment {
             rightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"오른쪽 클릭했음");
-
                     if (++showMon == 13) {
                         showYear++;
                         showMon = 1;
                     }
-
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -425,15 +424,14 @@ public class fragCal extends Fragment {
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
-            //오늘 day 가져옴
-            Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-            String sToday = String.valueOf(today);
-            if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
-                holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
+            if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
+                TextView textView=holder.tvItemDay;
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
             }
+
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
@@ -452,7 +450,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calfood_select.php";
+            target = "http://10.0.2.2:8012/calfood_select.php";
         }
 
         @Override
@@ -560,7 +558,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calsports_select.php";
+            target = "http://10.0.2.2:8012/calsports_select.php";
         }
 
         @Override
