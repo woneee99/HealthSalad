@@ -37,7 +37,6 @@ public class addList extends AppCompatActivity {
 
     String temp_str = "";
     String date = "";
-    String[] temp_date;
     String food_data = "";
     Double inp1, inp2, inp3;
 

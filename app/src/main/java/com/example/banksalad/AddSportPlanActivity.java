@@ -48,9 +48,8 @@ public class AddSportPlanActivity extends AppCompatActivity {
         sportSet=(EditText)findViewById(R.id.add_sportSet);
         sportCnt=(EditText)findViewById(R.id.add_sportCnt);
 
-        int tmpidx=calintent.getIntExtra("idxcnt",1);
-        idx=Integer.toString(++tmpidx);
 
+        idx="1";
         day=calintent.getStringExtra("dayString");
         id=calintent.getStringExtra("user_id");
         dateTv.setText(day);
@@ -96,6 +95,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
 
             String name=(String)params[1];
             String set=(String)params[2];

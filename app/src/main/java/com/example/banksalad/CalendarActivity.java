@@ -3,6 +3,7 @@ package com.example.banksalad;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,7 +101,11 @@ public class CalendarActivity extends AppCompatActivity {
     private Calendar mCal;
     private int showYear;
     private int showMon;
-    private int showDay;
+    private int showDay;//show~: 보여주는날(오늘,전날,담날), pickdays: 선택하는 날, todays
+    String pickdays;
+    String todays;
+    TextView todaytv;
+    TextView
 
     private LinearLayout container;
     String mJsonString;
@@ -132,9 +137,8 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     ArrayList<DbItem> dbList;
-    int lastidx;
     String user_id;
-    String pickdays;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,8 @@ public class CalendarActivity extends AppCompatActivity {
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
+        todays=pickdays;
+        Log.d(TAG,"투데이즈~~"+todays);
 
 
         //현재 날짜 텍스트뷰에 뿌려줌
@@ -224,6 +230,7 @@ public class CalendarActivity extends AppCompatActivity {
 
 
     }//onCreate()
+
 
 
 
@@ -295,7 +302,6 @@ public class CalendarActivity extends AppCompatActivity {
                     Log.d(TAG,map.get(posDays)+"");
                     dayList.get(position).setSet(map.get(posDays).toString()+"세트");
                 }
-
             }
 
             if (convertView == null) {
@@ -322,9 +328,6 @@ public class CalendarActivity extends AppCompatActivity {
                         showMon = 12;
                     }
 
-                    tvDate = (TextView) findViewById(R.id.tv_date);
-                    leftBtn = (Button) findViewById(R.id.pre_btn);
-
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
@@ -347,6 +350,8 @@ public class CalendarActivity extends AppCompatActivity {
                         dayList.add(new DayItem("0", "",  ""));
                     }
 
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
+
                     setCalendarDate(mCal.get(showMon), dayNum);
                     gridAdapter.notifyDataSetChanged();
                 }
@@ -360,9 +365,6 @@ public class CalendarActivity extends AppCompatActivity {
                         showYear++;
                         showMon = 1;
                     }
-
-                    tvDate = (TextView) findViewById(R.id.tv_date);
-                    rightBtn = (Button) findViewById(R.id.next_btn);
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -386,6 +388,8 @@ public class CalendarActivity extends AppCompatActivity {
                         dayList.add(new DayItem("0", "",  ""));
                     }
 
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
+
                     setCalendarDate(mCal.get(Calendar.MONTH) + 2, dayNum);
                     gridAdapter.notifyDataSetChanged();
                 }
@@ -395,8 +399,6 @@ public class CalendarActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(getApplicationContext(),AddSportPlanActivity.class);
-                    Log.d(TAG,"넘겨주는 idx값"+lastidx);
-                    intent.putExtra("idxcnt",lastidx);
                     intent.putExtra("user_id",user_id);
                     Log.d(TAG,"넘겨주는 day: "+pickdays);
                     intent.putExtra("dayString",pickdays);
@@ -416,27 +418,29 @@ public class CalendarActivity extends AppCompatActivity {
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
-            //오늘 day 가져옴
-            Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-            String sToday = String.valueOf(today);
-            if (sToday.equals(getItem(position).getDay())) { //오늘 day 텍스트 컬러 변경
-                holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
+
+            if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
+                Log.d(TAG,"오늘컬러~~");
+                Log.d(TAG,"todays: "+todays+" posdays: "+posDays);
+                TextView textView=holder.tvItemDay;
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                todaytv=holder.tvItemDay;
             }
+
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
             container = holder.tvItemWorks;
 
 
-
-
             if (!dayList.get(position).getType().equals("0")) {
-                Log.d(TAG, "반복문 넘어옴~~, dbsize: "+dbList.size());
                 for (int i = 0; i < dbList.size(); i++) {
                     if(posDays.equals(dbList.get(i).getDay())) {
                         textview(dbList.get(i).getSport());
                     }
                 }
+
             }
 
 
@@ -481,7 +485,6 @@ public class CalendarActivity extends AppCompatActivity {
 
                     for (int i = 0; i < results.length(); ++i) {
                         JSONObject temp = results.getJSONObject(i);
-                        lastidx=max(lastidx,temp.getInt("idx"));//추가할때 기본키idx 갱신
 
                         String inpDay=temp.getString("sport_date");
                         String inp = temp.getString("sport_name")+" ";
@@ -587,10 +590,9 @@ public class CalendarActivity extends AppCompatActivity {
             view1.setText(inp);
             view1.setTextSize(10);
             view1.setTextColor(Color.BLACK);
-            view1.setPadding(3, 3, 3, 3);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.gravity = Gravity.CENTER;
+            lp.gravity = Gravity.LEFT;
             view1.setLayoutParams(lp);
 
             container.addView(view1);

@@ -422,8 +422,6 @@ public class MainCalendarActivity extends AppCompatActivity {
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-//            if(showYear==curYearFormat)
-
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
@@ -433,7 +431,6 @@ public class MainCalendarActivity extends AppCompatActivity {
             if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
                 holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
             }
-
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
