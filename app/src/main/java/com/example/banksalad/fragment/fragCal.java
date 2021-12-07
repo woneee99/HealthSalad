@@ -2,6 +2,7 @@ package com.example.banksalad.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -129,6 +130,9 @@ public class fragCal extends Fragment {
     private int showMon;
     private int showDay;
 
+    String pickdays;
+    String todays;
+
     private LinearLayout container;
     String mJsonString;
 
@@ -160,7 +164,6 @@ public class fragCal extends Fragment {
 
     ArrayList<fragCal.DbItem> dbList;
     int lastidx;
-    String pickdays;
     TextView tvvitem;
     @Nullable
     @Override
@@ -204,6 +207,7 @@ public class fragCal extends Fragment {
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
+        todays = pickdays;
 
         //현재 날짜 텍스트뷰에 뿌려줌
         tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
@@ -423,11 +427,10 @@ public class fragCal extends Fragment {
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
-            //오늘 day 가져옴
-            Integer today = mCal.get(Calendar.DAY_OF_MONTH);
-            String sToday = String.valueOf(today);
-            if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
-                holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
+            if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
+                TextView textView=holder.tvItemDay;
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
             }
 
 

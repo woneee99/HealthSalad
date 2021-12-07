@@ -90,12 +90,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public void mOnClick(View v){
-        Intent intent = new Intent(getApplicationContext(),addList.class);
-        startActivity(intent);
-    }
-    public void alterOnClick(View v){
-        Intent intent = new Intent(getApplicationContext(),MyAlterActivity.class);
-        startActivity(intent);
-    }
 }

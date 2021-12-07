@@ -1,27 +1,17 @@
 package com.example.banksalad;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.banksalad.R;
-import com.example.banksalad.fragment.fragCal;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +35,6 @@ public class addList extends AppCompatActivity {
 
     String temp_str = "";
     String date = "";
-    String[] temp_date;
     String food_data = "";
     Double inp1, inp2, inp3;
 
@@ -80,7 +69,6 @@ public class addList extends AppCompatActivity {
         if (date != null || food_data != null) {
             if (date != null) {
                 String date_s[] = date.split("/");
-                //temp_str = date_s[0] + date_s[1] + date_s[2];
 
                 temp_str = "";
                 temp_str += date_s[0];
@@ -89,7 +77,6 @@ public class addList extends AppCompatActivity {
 
             } else if (food_data != null) {
                 String date_s[] = food_data.split("/");
-                //temp_str = date_s[0] + date_s[1] + date_s[2];
 
                 temp_str = "";
                 temp_str += date_s[0];
@@ -122,8 +109,6 @@ public class addList extends AppCompatActivity {
 
                     temp_str = "";
                     temp_str += year;
-//                temp_str += (month + 1);
-//                temp_str += dayOfMonth;
                     temp_str += ((month + 1) < 10) ? "0" + (month + 1) : (month + 1);
                     temp_str += (dayOfMonth < 10) ? "0" + dayOfMonth : dayOfMonth;
 
@@ -210,7 +195,6 @@ public class addList extends AppCompatActivity {
 
             try {
                 if (s == null) {
-                    //textview("X");
                 } else {
                     mJsonString = s;
 
@@ -231,7 +215,6 @@ public class addList extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
             }
         }
 
@@ -310,7 +293,6 @@ public class addList extends AppCompatActivity {
 
             try {
                 if (s == null) {
-                    //textview("X");
                 } else {
                     mJsonString = s;
 
@@ -324,7 +306,6 @@ public class addList extends AppCompatActivity {
                     String inp_breakfast2 = "0";
                     String inp_lunch2 = "0";
                     String inp_dinner2 = "0";
-                    //Double inp1, inp2, inp3;
 
                     for (int i = 0; i < results.length(); ++i) {
                         JSONObject temp = results.getJSONObject(i);
@@ -356,7 +337,6 @@ public class addList extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "Food 오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
             }
         }
 
