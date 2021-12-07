@@ -1,9 +1,9 @@
-package com.example.banksalad;
+package com.example.banksalad.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +17,14 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.banksalad.AddSportPlanActivity;
+import com.example.banksalad.go;
+import com.example.banksalad.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +48,8 @@ import java.util.Map;
 import static androidx.constraintlayout.widget.StateSet.TAG;
 import static java.lang.Integer.max;
 
-public class CalendarActivity extends AppCompatActivity {
-
+public class fragPlan extends Fragment {
+    private View view;
     /**
      * 연/월 텍스트뷰
      */
@@ -50,7 +57,7 @@ public class CalendarActivity extends AppCompatActivity {
     /**
      * 그리드뷰 어댑터
      */
-    private GridAdapter gridAdapter;
+    private fragPlan.GridAdapter gridAdapter;
 
     /**
      * 일 저장 할 리스트
@@ -82,7 +89,7 @@ public class CalendarActivity extends AppCompatActivity {
             Set = set;
         }
     }
-    private ArrayList<DayItem> dayList;
+    private ArrayList<fragPlan.DayItem> dayList;
     private Map<String,Integer> map;
 
     /**
@@ -101,11 +108,11 @@ public class CalendarActivity extends AppCompatActivity {
     private Calendar mCal;
     private int showYear;
     private int showMon;
-    private int showDay;//show~: 보여주는날(오늘,전날,담날), pickdays: 선택하는 날, todays
+    private int showDay;
     String pickdays;
     String todays;
     TextView todaytv;
-    TextView
+
 
     private LinearLayout container;
     String mJsonString;
@@ -136,30 +143,38 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    ArrayList<DbItem> dbList;
+    ArrayList<fragPlan.DbItem> dbList;
+    int lastidx;
     String user_id;
 
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
-
-        Log.d(TAG,"캘린더 돌아옴");
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.activity_calendar, container, false);
 
         dbList = new ArrayList<>();
         map=new HashMap<>();
+//        Intent addintent=new Intent(getActivity(),AddSportPlanActivity.class);//intent설정
 
-        user_id="qqq";
-        GetData task = new GetData();
+
+        user_id = getArguments().getString("userID");//main에서 받아옴
+
+        Log.d(TAG,"go에서 받아오긴 할거임"+user_id);
+
+
+
+        fragPlan.GetData task = new fragPlan.GetData();
+
+        Log.d(TAG,"넘겨주는 id"+user_id);
         task.execute(user_id);
 
 
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        gridView = (GridView) findViewById(R.id.gridview);
-        leftBtn = (Button) findViewById(R.id.pre_btn);
-        rightBtn = (Button) findViewById(R.id.next_btn);
-        toAddBtn=(Button)findViewById(R.id.toAddBtn);
+        tvDate = (TextView) view.findViewById(R.id.tv_date);
+        gridView = (GridView) view.findViewById(R.id.gridview);
+        leftBtn = (Button) view.findViewById(R.id.pre_btn);
+        rightBtn = (Button) view.findViewById(R.id.next_btn);
+        toAddBtn=(Button)view.findViewById(R.id.toAddBtn);
 
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
@@ -178,7 +193,6 @@ public class CalendarActivity extends AppCompatActivity {
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
         todays=pickdays;
-        Log.d(TAG,"투데이즈~~"+todays);
 
 
         //현재 날짜 텍스트뷰에 뿌려줌
@@ -186,14 +200,14 @@ public class CalendarActivity extends AppCompatActivity {
 
         //gridview 요일 표시
         dayList = new ArrayList<>();
-        dayList.add(new DayItem("0", "",  ""));
-        dayList.add(new DayItem("0", "일",  ""));
-        dayList.add(new DayItem("0", "월",  ""));
-        dayList.add(new DayItem("0", "화",  ""));
-        dayList.add(new DayItem("0", "수",  ""));
-        dayList.add(new DayItem("0", "목",  ""));
-        dayList.add(new DayItem("0", "금",  ""));
-        dayList.add(new DayItem("0", "토",  ""));
+        dayList.add(new fragPlan.DayItem("0", "",  ""));
+        dayList.add(new fragPlan.DayItem("0", "일",  ""));
+        dayList.add(new fragPlan.DayItem("0", "월",  ""));
+        dayList.add(new fragPlan.DayItem("0", "화",  ""));
+        dayList.add(new fragPlan.DayItem("0", "수",  ""));
+        dayList.add(new fragPlan.DayItem("0", "목",  ""));
+        dayList.add(new fragPlan.DayItem("0", "금",  ""));
+        dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
         mCal = Calendar.getInstance();
 
@@ -202,20 +216,20 @@ public class CalendarActivity extends AppCompatActivity {
         int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
         //1일 - 요일 매칭 시키기 위해 공백 add
 
-        dayList.add(new DayItem("0", "1주차", ""));
+        dayList.add(new fragPlan.DayItem("0", "1주차", ""));
         for (int i = 1; i < dayNum; i++) {
-            dayList.add(new DayItem("0", "",  ""));
+            dayList.add(new fragPlan.DayItem("0", "",  ""));
         }
         setCalendarDate(mCal.get(Calendar.MONTH) + 1, dayNum);
 
 
-        gridAdapter = new GridAdapter(getApplicationContext(), dayList);
+        gridAdapter = new fragPlan.GridAdapter(getActivity(), dayList);
         gridView.setAdapter(gridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a_parent, View a_view, int a_position, long a_id) {
-                DayItem item = gridAdapter.getItem(a_position);
+                fragPlan.DayItem item = gridAdapter.getItem(a_position);
                 if(!dayList.get(a_position).getType().equals("0")) {
                     int pDay = Integer.parseInt(item.getDay());
 
@@ -227,12 +241,8 @@ public class CalendarActivity extends AppCompatActivity {
                 }
             }
         });
-
-
+        return view;
     }//onCreate()
-
-
-
 
     /**
      * 해당 월에 표시할 일 수 구함
@@ -243,9 +253,9 @@ public class CalendarActivity extends AppCompatActivity {
         mCal.set(Calendar.MONTH, month - 1);
 
         for (int i = 0, j = dayNum; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++, j++) {
-            dayList.add(new DayItem("1", "" + (i + 1), "0세트"));
+            dayList.add(new fragPlan.DayItem("1", "" + (i + 1), "0세트"));
             if (j % 7 == 0)
-                dayList.add(new DayItem("0", "" + ((j / 8) + 2) + "주차", ""));//j:처음=1, 칸 수
+                dayList.add(new fragPlan.DayItem("0", "" + ((j / 8) + 2) + "주차", ""));//j:처음=1, 칸 수
         }
 
     }
@@ -255,7 +265,7 @@ public class CalendarActivity extends AppCompatActivity {
      */
     private class GridAdapter extends BaseAdapter {
 
-        private final List<DayItem> list;
+        private final List<fragPlan.DayItem> list;
         private final LayoutInflater inflater;
 
 
@@ -265,7 +275,7 @@ public class CalendarActivity extends AppCompatActivity {
          * @param context
          * @param list
          */
-        public GridAdapter(Context context, List<DayItem> list) {
+        public GridAdapter(Context context, List<fragPlan.DayItem> list) {
             this.list = list;
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -276,7 +286,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         @Override
-        public DayItem getItem(int position) {
+        public fragPlan.DayItem getItem(int position) {
             return list.get(position);
         }
 
@@ -288,7 +298,7 @@ public class CalendarActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            ViewHolder holder = null;
+            fragPlan.ViewHolder holder = null;
 
 
             String posDays="0";
@@ -302,12 +312,13 @@ public class CalendarActivity extends AppCompatActivity {
                     Log.d(TAG,map.get(posDays)+"");
                     dayList.get(position).setSet(map.get(posDays).toString()+"세트");
                 }
+
             }
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.item_calendar_gridview, parent, false);
 //                listView=inflater.inflate()
-                holder = new ViewHolder();
+                holder = new fragPlan.ViewHolder();
 
                 holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
                 holder.tvItemWorkSet = (TextView) convertView.findViewById(R.id.tv_item_workset);
@@ -315,7 +326,7 @@ public class CalendarActivity extends AppCompatActivity {
                 convertView.setTag(holder);
 
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (fragPlan.ViewHolder) convertView.getTag();
             }
             holder.bind(dayList.get(position).getDay(), dayList.get(position).getSet());
 
@@ -336,18 +347,18 @@ public class CalendarActivity extends AppCompatActivity {
                     tvDate.setText(showYear + "/" + showMon);
 
                     dayList.clear();
-                    dayList.add(new DayItem("0", "",  ""));
-                    dayList.add(new DayItem("0", "일",  ""));
-                    dayList.add(new DayItem("0", "월",  ""));
-                    dayList.add(new DayItem("0", "화",  ""));
-                    dayList.add(new DayItem("0", "수",  ""));
-                    dayList.add(new DayItem("0", "목",  ""));
-                    dayList.add(new DayItem("0", "금",  ""));
-                    dayList.add(new DayItem("0", "토",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "일",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "월",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "화",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "수",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "목",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "금",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
-                    dayList.add(new DayItem("0", "1주차",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "1주차",  ""));
                     for (int i = 1; i < dayNum; i++) {
-                        dayList.add(new DayItem("0", "",  ""));
+                        dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
                     todaytv.setTextColor(getResources().getColor(R.color.black));
@@ -374,18 +385,18 @@ public class CalendarActivity extends AppCompatActivity {
                     tvDate.setText(showYear + "/" + showMon);
 
                     dayList.clear();
-                    dayList.add(new DayItem("0", "",  ""));
-                    dayList.add(new DayItem("0", "일",  ""));
-                    dayList.add(new DayItem("0", "월",  ""));
-                    dayList.add(new DayItem("0", "화",  ""));
-                    dayList.add(new DayItem("0", "수",  ""));
-                    dayList.add(new DayItem("0", "목", ""));
-                    dayList.add(new DayItem("0", "금",  ""));
-                    dayList.add(new DayItem("0", "토",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "일",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "월",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "화",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "수",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "목", ""));
+                    dayList.add(new fragPlan.DayItem("0", "금",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "토",  ""));
 
-                    dayList.add(new DayItem("0", "1주차",  ""));
+                    dayList.add(new fragPlan.DayItem("0", "1주차",  ""));
                     for (int i = 1; i < dayNum; i++) {
-                        dayList.add(new DayItem("0", "",  ""));
+                        dayList.add(new fragPlan.DayItem("0", "",  ""));
                     }
 
                     todaytv.setTextColor(getResources().getColor(R.color.black));
@@ -398,14 +409,14 @@ public class CalendarActivity extends AppCompatActivity {
             toAddBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent=new Intent(getApplicationContext(),AddSportPlanActivity.class);
+                    Intent intent=new Intent(getActivity(), AddSportPlanActivity.class);
+                    Log.d(TAG,"넘겨주는 idx값"+lastidx);
+                    intent.putExtra("idxcnt",lastidx);
                     intent.putExtra("user_id",user_id);
-                    Log.d(TAG,"넘겨주는 day: "+pickdays);
                     intent.putExtra("dayString",pickdays);
                     startActivity(intent);
                 }
             });
-
 
             // 오늘에 날짜를 세팅 해준다.
             long now = System.currentTimeMillis();
@@ -416,9 +427,6 @@ public class CalendarActivity extends AppCompatActivity {
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
 
-            //해당 날짜 텍스트 컬러,배경 변경
-            mCal = Calendar.getInstance();
-
             if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
                 Log.d(TAG,"오늘컬러~~");
                 Log.d(TAG,"todays: "+todays+" posdays: "+posDays);
@@ -428,19 +436,18 @@ public class CalendarActivity extends AppCompatActivity {
                 todaytv=holder.tvItemDay;
             }
 
-
             //textview 추가
             holder.tvItemWorks.removeAllViews();
             container = holder.tvItemWorks;
 
 
             if (!dayList.get(position).getType().equals("0")) {
+                Log.d(TAG, "반복문 넘어옴~~, dbsize: "+dbList.size());
                 for (int i = 0; i < dbList.size(); i++) {
                     if(posDays.equals(dbList.get(i).getDay())) {
                         textview(dbList.get(i).getSport());
                     }
                 }
-
             }
 
 
@@ -471,7 +478,6 @@ public class CalendarActivity extends AppCompatActivity {
 
             try {
 
-                //됐나..?
 //            progressDialog.dismiss();
                 Log.d(TAG, "Activity- response - " + s);
 
@@ -489,7 +495,7 @@ public class CalendarActivity extends AppCompatActivity {
                         String inpDay=temp.getString("sport_date");
                         String inp = temp.getString("sport_name")+" ";
                         inp += temp.getString("sport_set");
-                        dbList.add(new DbItem(inpDay,inp));
+                        dbList.add(new fragPlan.DbItem(inpDay,inp));
 
                         Log.d(TAG,"받아온 세트! "+temp.getString("sport_set"));
 
@@ -580,7 +586,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     public void textview(String a) {
         if (a != null) {
-            TextView view1 = new TextView(this);
+            TextView view1 = new TextView(getActivity());
 
             String inp;
             if (a.length() > 10) {
@@ -590,6 +596,7 @@ public class CalendarActivity extends AppCompatActivity {
             view1.setText(inp);
             view1.setTextSize(10);
             view1.setTextColor(Color.BLACK);
+            view1.setPadding(1, 1, 1, 1);
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             lp.gravity = Gravity.LEFT;
@@ -601,6 +608,5 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

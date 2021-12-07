@@ -10,8 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.banksalad.fragment.fragPlan;
+import com.example.banksalad.go;
 
 import org.w3c.dom.Text;
 
@@ -35,6 +41,8 @@ public class AddSportPlanActivity extends AppCompatActivity {
     String idx;
     String id;
 
+    Fragment fragPlan;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -48,10 +56,12 @@ public class AddSportPlanActivity extends AppCompatActivity {
         sportSet=(EditText)findViewById(R.id.add_sportSet);
         sportCnt=(EditText)findViewById(R.id.add_sportCnt);
 
-
+        fragPlan = new fragPlan();
         idx="1";
         day=calintent.getStringExtra("dayString");
         id=calintent.getStringExtra("user_id");
+
+
         dateTv.setText(day);
 
 
@@ -77,6 +87,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            Log.d(TAG,"pre넘어옴");
             super.onPreExecute();
             target = "http://10.0.2.2/addsportdate.php";
         }
@@ -84,10 +95,12 @@ public class AddSportPlanActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {//디비에 있는거 다 받아옴
             super.onPostExecute(s);
+            Log.d(TAG,"post받아옴"+s);
 
             Log.d(TAG,"response--"+s);
 
-            Intent intent=new Intent(getApplicationContext(),CalendarActivity.class);
+            Intent intent=new Intent(getApplicationContext(),go.class);
+            intent.putExtra("userID",id);
             startActivity(intent);
 
             finish();
@@ -95,7 +108,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
+            Log.d(TAG,"DB받아오는 쪽 ");
 
             String name=(String)params[1];
             String set=(String)params[2];

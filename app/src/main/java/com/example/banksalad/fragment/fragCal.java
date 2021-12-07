@@ -2,7 +2,6 @@ package com.example.banksalad.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.banksalad.MainCalendarActivity;
 import com.example.banksalad.R;
 import com.example.banksalad.addList;
 
@@ -53,7 +51,6 @@ public class fragCal extends Fragment {
     Map<String, String> map2= new HashMap<String, String>(); //운동 체크 map
     String cal_sport_userId;
     String cal_food_userId;
-    private EditText et_id;
 
     /**
      * 연/월 텍스트뷰
@@ -131,6 +128,7 @@ public class fragCal extends Fragment {
     private int showYear;
     private int showMon;
     private int showDay;
+
     String pickdays;
     String todays;
 
@@ -165,7 +163,6 @@ public class fragCal extends Fragment {
 
     ArrayList<fragCal.DbItem> dbList;
     int lastidx;
-
     TextView tvvitem;
     @Nullable
     @Override
@@ -175,8 +172,10 @@ public class fragCal extends Fragment {
 
         dbList = new ArrayList<>();
 
-        cal_sport_userId="qqq";
-        cal_food_userId="qqq";
+        String userID = getActivity().getIntent().getStringExtra("userID");
+
+        cal_food_userId = userID;
+        cal_sport_userId = userID;
 
         fragCal.GetDataFoodKcal taskKcal = new fragCal.GetDataFoodKcal();
         taskKcal.execute(cal_food_userId);
@@ -207,7 +206,7 @@ public class fragCal extends Fragment {
         pickdays=""+showYear;
         pickdays+=(showMon<10)? "0"+showMon:showMon;
         pickdays+=(showDay<10)? "0"+showDay:showDay;
-        todays=pickdays;
+        todays = pickdays;
 
         //현재 날짜 텍스트뷰에 뿌려줌
         tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
@@ -304,7 +303,7 @@ public class fragCal extends Fragment {
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.activity_calendar_tab_item, parent, false);
-
+//                listView=inflater.inflate()
                 holder = new fragCal.ViewHolder();
 
                 holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
@@ -345,7 +344,6 @@ public class fragCal extends Fragment {
             leftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"넘어오긴한다?");
                     if (--showMon == 0) {
                         showYear--;
                         showMon = 12;
@@ -354,9 +352,7 @@ public class fragCal extends Fragment {
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-                    //1일 - 요일 매칭 시키기 위해 공백 add
-
-                    Log.d(TAG,showYear + "/" + showMon);
+//1일 - 요일 매칭 시키기 위해 공백 add
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -381,13 +377,10 @@ public class fragCal extends Fragment {
             rightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG,"오른쪽 클릭했음");
-
                     if (++showMon == 13) {
                         showYear++;
                         showMon = 1;
                     }
-
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -418,9 +411,7 @@ public class fragCal extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(getActivity(), addList.class);
-                    Log.d(TAG,"넘겨주는 idx값"+lastidx);
-                    intent.putExtra("idxcnt",lastidx);
-                    intent.putExtra("dayString",pickdays);
+                    intent.putExtra("userID",cal_sport_userId); // id 넘기기
                     startActivity(intent);
                 }
             });
@@ -433,7 +424,6 @@ public class fragCal extends Fragment {
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
             if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
@@ -441,6 +431,7 @@ public class fragCal extends Fragment {
                 textView.setTextColor(getResources().getColor(R.color.colorAccent));
                 textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
             }
+
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
@@ -459,7 +450,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calfood_select.php";
+            target = "http://10.0.2.2:8012/calfood_select.php";
         }
 
         @Override
@@ -509,6 +500,7 @@ public class fragCal extends Fragment {
         protected String doInBackground(String... params) {
             String id=params[0];
             String postParam="cal_food_userID="+id;
+            Log.d(TAG,"id로 검색~~"+id);
 
             try {
                 URL url = new URL(target);
@@ -567,7 +559,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calsports_select.php";
+            target = "http://10.0.2.2:8012/calsports_select.php";
         }
 
         @Override

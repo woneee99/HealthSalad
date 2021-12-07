@@ -25,6 +25,7 @@ public class addExercise extends AppCompatActivity {
     private Button button;
 
     String cal_sport_userId;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,16 +33,17 @@ public class addExercise extends AppCompatActivity {
         setContentView(R.layout.activity_add_exercise);
 
         Intent intent = getIntent();
-
-        cal_sport_userId="hwangjuwon"; // userID 받아오기
+        userID = intent.getStringExtra("userID");
+        cal_sport_userId = userID; // userID 받아오기
 
         button = findViewById(R.id.ok_exercise);
+
         temp = intent.getStringExtra("datetext");
         temp_date = temp.split("/"); // 2021/11/29 자르기
         exercise_date = "" + temp_date[0];
         exercise_date += (Integer.parseInt(temp_date[1]) < 10) ? "0" + temp_date[1] : temp_date[1];
         exercise_date += (Integer.parseInt(temp_date[2]) < 10) ? "0" + temp_date[2] : temp_date[2];
-        //exercise_date = temp_date[0]+temp_date[1]+temp_date[2]; // 20211129로 넣기
+
         exercise_name = (EditText)findViewById(R.id.dlgName_exercise);
         exercise_cnt = (EditText)findViewById(R.id.dlgcnt_exercise);
         exercise_set = (EditText)findViewById(R.id.dlgset_exercise);
@@ -53,7 +55,10 @@ public class addExercise extends AppCompatActivity {
                 String NAME = exercise_name.getText().toString();
                 String CNT = exercise_cnt.getText().toString();
                 String SET = exercise_set.getText().toString();
-                String USERID = cal_sport_userId;
+
+                Intent intent = getIntent();
+                userID = intent.getStringExtra("userID");
+                String USERID = userID;
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -62,14 +67,11 @@ public class addExercise extends AppCompatActivity {
                             JSONObject jasonObject = new JSONObject(response);
                             boolean success=jasonObject.getBoolean("success");
                             if (success) {
-                                String cal_sport_Name = jasonObject.optString("cal_sport_name","");
-                                String cal_sport_Cnt = jasonObject.optString("cal_sport_cnt","");
-                                String cal_sport_Set = jasonObject.optString("cal_sport_set","");
-
                                 Toast.makeText(getApplicationContext(), "기록 완료", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(addExercise.this, addList.class);
                                 intent.putExtra("cal_sport_date", temp);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 finish();
                             }

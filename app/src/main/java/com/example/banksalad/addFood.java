@@ -40,6 +40,7 @@ public class addFood extends AppCompatActivity {
     String mJsonString;
 
     String cal_food_userId;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +48,17 @@ public class addFood extends AppCompatActivity {
         setContentView(R.layout.activity_add_food);
 
         Intent intent = getIntent();
-
-        cal_food_userId = "hwangjuwon"; // userID 받아오기
+        userID = intent.getStringExtra("userID");
+        cal_food_userId = userID; // userID 받아오기
 
         button = findViewById(R.id.ok_food);
+
         temp = intent.getStringExtra("datetext");
         temp_date = temp.split("/"); // 2021/11/29 자르기
         food_date = "" + temp_date[0];
         food_date += (Integer.parseInt(temp_date[1]) < 10) ? "0" + temp_date[1] : temp_date[1];
         food_date += (Integer.parseInt(temp_date[2]) < 10) ? "0" + temp_date[2] : temp_date[2];
-        //food_date = temp_date[0]+temp_date[1]+temp_date[2]; // 20211129로 넣기
+
         food_name = (EditText)findViewById(R.id.dlgName);
         food_weight = (EditText)findViewById(R.id.dlgweight);
 
@@ -113,13 +115,11 @@ public class addFood extends AppCompatActivity {
                             JSONObject jasonObject = new JSONObject(response);
                             boolean success=jasonObject.getBoolean("success");
                             if (success) {
-                                String cal_food_Name = jasonObject.optString("cal_food_name","");
-                                String cal_food_Weight = jasonObject.optString("cal_food_weight","");
-
                                 Toast.makeText(getApplicationContext(), "기록 완료", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(addFood.this, addList.class);
                                 intent.putExtra("cal_food_date", temp);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 finish();
                             }
@@ -160,7 +160,6 @@ public class addFood extends AppCompatActivity {
 
             try {
                 if (s == null) {
-                    //textview("X");
                 } else {
                     mJsonString = s;
 
@@ -174,7 +173,6 @@ public class addFood extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
             }
         }
 
@@ -200,7 +198,6 @@ public class addFood extends AppCompatActivity {
                 return sb.toString().trim();
 
             } catch (Exception e) {
-                //Log.d(TAG,"InsertData: Error ",e);
                 errorString = e.toString();
             }
             return null;
