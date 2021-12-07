@@ -120,7 +120,6 @@ public class addList extends AppCompatActivity {
                 }
             }, mYear, mMonth, mDay);
             datePickerDialog.show();
-            ////////////
         }
     }
 
