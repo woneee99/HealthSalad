@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.banksalad.fragment.fragCal;
+import com.example.banksalad.fragment.fragPlan;
 import com.example.banksalad.fragment.fragWatch;
 import com.example.banksalad.fragment.fragUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment2.setArguments(bundle1);
                         transaction1.replace(R.id.frame_container, fragment2);
                         transaction1.commit();
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragCal()).commit();
                         break;
                     case R.id.user:
                         Bundle bundle = new Bundle();
@@ -77,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         transaction.commit();
                         break;
                     case R.id.plan:
-                        Intent intent1=new Intent(getApplicationContext(), CalendarActivity.class);
-                        startActivity(intent1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragPlan()).commit();
                         break;
                     case R.id.watch:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new fragWatch()).commit();

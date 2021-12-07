@@ -50,7 +50,6 @@ public class addFood extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
         cal_food_userId = userID; // userID 받아오기
-        // cal_food_userId = "yys";
 
         button = findViewById(R.id.ok_food);
         temp = intent.getStringExtra("datetext");
@@ -122,6 +121,7 @@ public class addFood extends AppCompatActivity {
 
                                 Intent intent = new Intent(addFood.this, addList.class);
                                 intent.putExtra("cal_food_date", temp);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 finish();
                             }

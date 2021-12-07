@@ -36,8 +36,6 @@ public class addExercise extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         cal_sport_userId = userID; // userID 받아오기
 
-        // cal_sport_userId="yys";
-
         button = findViewById(R.id.ok_exercise);
         temp = intent.getStringExtra("datetext");
         temp_date = temp.split("/"); // 2021/11/29 자르기
@@ -56,7 +54,10 @@ public class addExercise extends AppCompatActivity {
                 String NAME = exercise_name.getText().toString();
                 String CNT = exercise_cnt.getText().toString();
                 String SET = exercise_set.getText().toString();
-                String USERID = cal_sport_userId;
+
+                Intent intent = getIntent();
+                userID = intent.getStringExtra("userID");
+                String USERID = userID;
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -73,6 +74,7 @@ public class addExercise extends AppCompatActivity {
 
                                 Intent intent = new Intent(addExercise.this, addList.class);
                                 intent.putExtra("cal_sport_date", temp);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 finish();
                             }

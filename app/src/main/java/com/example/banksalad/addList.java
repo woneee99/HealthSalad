@@ -1,19 +1,27 @@
 package com.example.banksalad;
+
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.banksalad.R;
+import com.example.banksalad.fragment.fragCal;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,18 +74,27 @@ public class addList extends AppCompatActivity {
         record_dinner_kcal = (TextView) findViewById(R.id.dinner_kcal);
 
         userID = intent.getStringExtra("userID");
-//        cal_sport_userId="yys";
-//        cal_food_userId="yys";
         cal_sport_userId = userID;
         cal_food_userId = userID;
 
         if (date != null || food_data != null) {
             if (date != null) {
                 String date_s[] = date.split("/");
-                temp_str = date_s[0] + date_s[1] + date_s[2];
+                //temp_str = date_s[0] + date_s[1] + date_s[2];
+
+                temp_str = "";
+                temp_str += date_s[0];
+                temp_str += (Integer.parseInt(date_s[1]) < 10) ? "0" + (date_s[1]) : (date_s[1]);
+                temp_str += (Integer.parseInt(date_s[2]) < 10) ? "0" + date_s[2] : date_s[2];
+
             } else if (food_data != null) {
                 String date_s[] = food_data.split("/");
-                temp_str = date_s[0] + date_s[1] + date_s[2];
+                //temp_str = date_s[0] + date_s[1] + date_s[2];
+
+                temp_str = "";
+                temp_str += date_s[0];
+                temp_str += (Integer.parseInt(date_s[1]) < 10) ? "0" + (date_s[1]) : (date_s[1]);
+                temp_str += (Integer.parseInt(date_s[2]) < 10) ? "0" + date_s[2] : date_s[2];
             }
 
             GetDataExercise task = new GetDataExercise();
@@ -125,14 +142,14 @@ public class addList extends AppCompatActivity {
     public void mOnClickfood(View v) { // 음식 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addFood.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
-        intent.putExtra("userID", userID); // id 넘기기
+        intent.putExtra("userID", cal_food_userId); // id 넘기기
         startActivity(intent);
     }
 
     public void mOnClickexercise(View v) { //운동 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addExercise.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
-        intent.putExtra("userID", userID); // id 넘기기
+        intent.putExtra("userID", cal_sport_userId); // id 넘기기
         startActivity(intent);
     }
 
@@ -152,8 +169,6 @@ public class addList extends AppCompatActivity {
 
                 temp_str = "";
                 temp_str += year;
-//                temp_str += (month + 1);
-//                temp_str += dayOfMonth;
                 temp_str += ((month + 1) < 10) ? "0" + (month + 1) : (month + 1);
                 temp_str += (dayOfMonth < 10) ? "0" + dayOfMonth : dayOfMonth;
 
@@ -400,7 +415,8 @@ public class addList extends AppCompatActivity {
         }
     }
     public void mOnClickRecord(View v) { // 기록 확인 버튼
-        Intent intent = new Intent(addList.this, MainActivity.class);
+        Intent intent = new Intent(addList.this, goFragCal.class);
+        intent.putExtra("userID", userID);
         startActivity(intent);
         finish();
     }

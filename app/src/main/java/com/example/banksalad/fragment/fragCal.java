@@ -346,9 +346,6 @@ public class fragCal extends Fragment {
                         showMon = 12;
                     }
 
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    leftBtn = (Button) view.findViewById(R.id.pre_btn);
-
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
@@ -381,9 +378,6 @@ public class fragCal extends Fragment {
                         showYear++;
                         showMon = 1;
                     }
-
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    rightBtn = (Button) view.findViewById(R.id.next_btn);
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -426,9 +420,6 @@ public class fragCal extends Fragment {
             final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-
-//            if(showYear==curYearFormat)
-
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
