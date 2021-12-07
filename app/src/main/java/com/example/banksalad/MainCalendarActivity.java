@@ -164,8 +164,8 @@ public class MainCalendarActivity extends AppCompatActivity {
 
         dbList = new ArrayList<>();
 
-        cal_sport_userId="yys";
-        cal_food_userId="yys";
+        cal_sport_userId="qqq";
+        cal_food_userId="qqq";
 
         GetDataFoodKcal taskKcal = new GetDataFoodKcal();
         taskKcal.execute(cal_food_userId);
