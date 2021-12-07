@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class fragCal extends Fragment {
     Map<String, String> map2= new HashMap<String, String>(); //운동 체크 map
     String cal_sport_userId;
     String cal_food_userId;
+    private EditText et_id;
 
     /**
      * 연/월 텍스트뷰
@@ -169,8 +171,8 @@ public class fragCal extends Fragment {
 
         dbList = new ArrayList<>();
 
-        cal_sport_userId="qqq";
-        cal_food_userId="qqq";
+        cal_sport_userId="hwangjuwon";
+        cal_food_userId="hwangjuwon";
 
         fragCal.GetDataFoodKcal taskKcal = new fragCal.GetDataFoodKcal();
         taskKcal.execute(cal_food_userId);
@@ -297,7 +299,7 @@ public class fragCal extends Fragment {
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.activity_calendar_tab_item, parent, false);
-//                listView=inflater.inflate()
+
                 holder = new fragCal.ViewHolder();
 
                 holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
@@ -338,18 +340,18 @@ public class fragCal extends Fragment {
             leftBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d(TAG,"넘어오긴한다?");
                     if (--showMon == 0) {
                         showYear--;
                         showMon = 12;
                     }
 
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    leftBtn = (Button) view.findViewById(R.id.pre_btn);
-
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-//1일 - 요일 매칭 시키기 위해 공백 add
+                    //1일 - 요일 매칭 시키기 위해 공백 add
+
+                    Log.d(TAG,showYear + "/" + showMon);
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -374,13 +376,13 @@ public class fragCal extends Fragment {
             rightBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d(TAG,"오른쪽 클릭했음");
+
                     if (++showMon == 13) {
                         showYear++;
                         showMon = 1;
                     }
 
-                    tvDate = (TextView) view.findViewById(R.id.tv_date);
-                    rightBtn = (Button) view.findViewById(R.id.next_btn);
 
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
@@ -426,8 +428,6 @@ public class fragCal extends Fragment {
             final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
             final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
 
-//            if(showYear==curYearFormat)
-
 
             //해당 날짜 텍스트 컬러,배경 변경
             mCal = Calendar.getInstance();
@@ -437,7 +437,6 @@ public class fragCal extends Fragment {
             if (sToday.equals(getItem(position))) { //오늘 day 텍스트 컬러 변경
                 holder.tvItemDay.setTextColor(getResources().getColor(R.color.color_000000));
             }
-
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
@@ -456,7 +455,7 @@ public class fragCal extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/calfood_select.php";
+            target = "http://10.0.2.2:/calfood_select.php";
         }
 
         @Override
@@ -469,6 +468,7 @@ public class fragCal extends Fragment {
             super.onPostExecute(s);
 
             try {
+
 //            progressDialog.dismiss();
                 Log.d(TAG, "Activity- response - " + s);
 

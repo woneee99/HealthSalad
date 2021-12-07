@@ -43,6 +43,7 @@ public class addList extends AppCompatActivity {
 
     String cal_sport_userId;
     String cal_food_userId;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,11 @@ public class addList extends AppCompatActivity {
         record_lunch_kcal = (TextView) findViewById(R.id.lunch_kcal);
         record_dinner_kcal = (TextView) findViewById(R.id.dinner_kcal);
 
-        cal_sport_userId="qqq";
-        cal_food_userId="qqq";
+        userID = intent.getStringExtra("userID");
+//        cal_sport_userId="yys";
+//        cal_food_userId="yys";
+        cal_sport_userId = userID;
+        cal_food_userId = userID;
 
         if (date != null || food_data != null) {
             if (date != null) {
@@ -121,12 +125,14 @@ public class addList extends AppCompatActivity {
     public void mOnClickfood(View v) { // 음식 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addFood.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
+        intent.putExtra("userID", userID); // id 넘기기
         startActivity(intent);
     }
 
     public void mOnClickexercise(View v) { //운동 추가 버튼
         Intent intent = new Intent(getApplicationContext(), addExercise.class);
         intent.putExtra("datetext", Datetext.getText()); //날짜 넘기기
+        intent.putExtra("userID", userID); // id 넘기기
         startActivity(intent);
     }
 
@@ -329,15 +335,13 @@ public class addList extends AppCompatActivity {
                     record_lunch.setText(inp_lunch);
                     record_dinner.setText(inp_dinner);
 
-                    Log.d(TAG,"추가"+inp_breakfast+inp_lunch+inp_dinner);
-
                     record_breakfast_kcal.setText(": "+inp_breakfast2+"kcal");
                     record_lunch_kcal.setText(": "+inp_lunch2+"kcal");
                     record_dinner_kcal.setText(": "+inp_dinner2+"kcal");
                 }
             } catch (JSONException e) {
-                Toast.makeText(getApplicationContext(), "Food 오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
+//                Toast.makeText(getApplicationContext(), "Food 오류", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"POST 에러: "+e);
             }
         }
 

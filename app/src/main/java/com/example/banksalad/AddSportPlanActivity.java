@@ -8,9 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,6 +26,7 @@ import static androidx.constraintlayout.widget.StateSet.TAG;
 
 public class AddSportPlanActivity extends AppCompatActivity {
 
+    private TextView dateTv;
     private Button addBtn;
     private EditText sportName;
     private EditText sportSet;
@@ -38,6 +42,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         Intent calintent=getIntent(); //얘 뭐하는 애더라
 
+        dateTv=(TextView)findViewById(R.id.date_item);
         addBtn=(Button)findViewById(R.id.addBtn_sportP);
         sportName=(EditText)findViewById(R.id.add_sportName);
         sportSet=(EditText)findViewById(R.id.add_sportSet);
@@ -48,6 +53,7 @@ public class AddSportPlanActivity extends AppCompatActivity {
 
         day=calintent.getStringExtra("dayString");
         id=calintent.getStringExtra("user_id");
+        dateTv.setText(day);
 
 
         addBtn.setOnClickListener(new View.OnClickListener(){

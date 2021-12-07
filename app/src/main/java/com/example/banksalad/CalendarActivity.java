@@ -216,6 +216,8 @@ public class CalendarActivity extends AppCompatActivity {
                     pickdays = "" + showYear;
                     pickdays += (showMon < 10) ? "0" + showMon : showMon;
                     pickdays += (pDay < 10) ? "0" + pDay : pDay;
+
+                    Log.d(TAG,"선택 날짜 "+pickdays);
                 }
             }
         });
@@ -396,6 +398,7 @@ public class CalendarActivity extends AppCompatActivity {
                     Log.d(TAG,"넘겨주는 idx값"+lastidx);
                     intent.putExtra("idxcnt",lastidx);
                     intent.putExtra("user_id",user_id);
+                    Log.d(TAG,"넘겨주는 day: "+pickdays);
                     intent.putExtra("dayString",pickdays);
                     startActivity(intent);
                 }
@@ -500,7 +503,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "POST 에러~~: " + e);
             }
 
-            gridView.setAdapter(gridAdapter);
+            gridAdapter.notifyDataSetChanged();
         }
 
         @Override

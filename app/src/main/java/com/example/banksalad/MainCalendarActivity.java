@@ -164,8 +164,8 @@ public class MainCalendarActivity extends AppCompatActivity {
 
         dbList = new ArrayList<>();
 
-        cal_sport_userId="qqq";
-        cal_food_userId="qqq";
+        cal_sport_userId="hwangjuwon";
+        cal_food_userId="hwangjuwon";
 
         GetDataFoodKcal taskKcal = new GetDataFoodKcal();
         taskKcal.execute(cal_food_userId);
@@ -495,7 +495,7 @@ public class MainCalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "POST 에러: " + e);
             }
 
-            gridView.setAdapter(gridAdapter);
+            gridAdapter.notifyDataSetChanged();
         }
 
         @Override
@@ -595,7 +595,7 @@ public class MainCalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "POST 에러: " + e);
             }
 
-            gridView.setAdapter(gridAdapter);
+            gridAdapter.notifyDataSetChanged();
         }
 
         @Override

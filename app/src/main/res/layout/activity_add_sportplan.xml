@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/date_item"
         android:text="2021년 11월 30일"
         android:textSize="30dp"
         android:padding="5dp"
