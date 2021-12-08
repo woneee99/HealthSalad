@@ -131,6 +131,7 @@ public class fragCal extends Fragment {
 
     String pickdays;
     String todays;
+    TextView todaytv;
 
     private LinearLayout container;
     String mJsonString;
@@ -168,7 +169,6 @@ public class fragCal extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         view = inflater.inflate(R.layout.activity_calendar_tab, container, false);
-        Log.d(TAG,"캘린더 돌아옴");
 
         dbList = new ArrayList<>();
 
@@ -260,7 +260,7 @@ public class fragCal extends Fragment {
         mCal.set(Calendar.MONTH, month - 1);
 
         for (int i = 0, j = dayNum; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++, j++) {
-            dayList.add(new fragCal.DayItem("1", "" + (i + 1), 0.0, "20세트"));
+            dayList.add(new fragCal.DayItem("1", "" + (i + 1), 0.0, ""));
         }
     }
 
@@ -303,7 +303,6 @@ public class fragCal extends Fragment {
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.activity_calendar_tab_item, parent, false);
-//                listView=inflater.inflate()
                 holder = new fragCal.ViewHolder();
 
                 holder.tvItemDay = (TextView) convertView.findViewById(R.id.tv_item_gridview);
@@ -338,7 +337,6 @@ public class fragCal extends Fragment {
                 }
             }
 
-            //holder.bind(dayList.get(position).getDay(), result_kcal, dayList.get(position).getSet());
             holder.bind(dayList.get(position).getDay(), result_kcal, result_exercise);
 
             leftBtn.setOnClickListener(new View.OnClickListener() {
@@ -352,7 +350,7 @@ public class fragCal extends Fragment {
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-//1일 - 요일 매칭 시키기 위해 공백 add
+                    //1일 - 요일 매칭 시키기 위해 공백 add
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -368,6 +366,8 @@ public class fragCal extends Fragment {
                     for (int i = 1; i < dayNum; i++) {
                         dayList.add(new fragCal.DayItem("0", "", 0.0, ""));
                     }
+
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
 
                     setCalendarDate(mCal.get(showMon), dayNum);
                     gridAdapter.notifyDataSetChanged();
@@ -385,7 +385,7 @@ public class fragCal extends Fragment {
                     mCal = Calendar.getInstance();
                     mCal.set(showYear, showMon - 1, 1);
                     int dayNum = mCal.get(Calendar.DAY_OF_WEEK);
-//1일 - 요일 매칭 시키기 위해 공백 add
+                    //1일 - 요일 매칭 시키기 위해 공백 add
 
                     tvDate.setText(showYear + "/" + showMon);
 
@@ -401,6 +401,8 @@ public class fragCal extends Fragment {
                     for (int i = 1; i < dayNum; i++) {
                         dayList.add(new fragCal.DayItem("0", "", 0.0, ""));
                     }
+
+                    todaytv.setTextColor(getResources().getColor(R.color.black));
 
                     setCalendarDate(mCal.get(Calendar.MONTH) + 2, dayNum);
                     gridAdapter.notifyDataSetChanged();
@@ -429,9 +431,9 @@ public class fragCal extends Fragment {
             if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
                 TextView textView=holder.tvItemDay;
                 textView.setTextColor(getResources().getColor(R.color.colorAccent));
-                textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-            }
 
+                todaytv=holder.tvItemDay;
+            }
 
             //textview 추가
             holder.tvItemWorks.removeAllViews();
@@ -439,12 +441,9 @@ public class fragCal extends Fragment {
 
             return convertView;
         }
-
-
     }//adaptor끝
 
     private class GetDataFoodKcal extends AsyncTask<String, Void, String> { //칼로리 계산
-
         String errorString = null;
         String target;
 
@@ -463,12 +462,7 @@ public class fragCal extends Fragment {
             super.onPostExecute(s);
 
             try {
-
-//            progressDialog.dismiss();
-                Log.d(TAG, "Activity- response - " + s);
-
                 if (s == null) {
-                    //textview("안되네요~~~");
                 } else {
                     mJsonString = s;
 
@@ -479,9 +473,7 @@ public class fragCal extends Fragment {
                         JSONObject temp = results.getJSONObject(i);
 
                         String inpDay = temp.getString("cal_food_date");
-                        //String inp = temp.getString("cal_food_kcal");
 
-                        Double dd = Double.parseDouble(temp.getString("cal_food_kcal"));
                         if(map.containsKey(inpDay)==true){
                             Double tt = map.get(inpDay);
                             map.remove(inpDay);
@@ -500,6 +492,7 @@ public class fragCal extends Fragment {
         protected String doInBackground(String... params) {
             String id=params[0];
             String postParam="cal_food_userID="+id;
+            Log.d(TAG,"id로 검색~~"+id);
 
             try {
                 URL url = new URL(target);
@@ -552,7 +545,6 @@ public class fragCal extends Fragment {
     }
 
     private class GetDataExerciseCheck extends AsyncTask<String, Void, String> { //운동체크
-
         String errorString = null;
         String target;
 
@@ -571,12 +563,7 @@ public class fragCal extends Fragment {
             super.onPostExecute(s);
 
             try {
-
-//            progressDialog.dismiss();
-                Log.d(TAG, "Activity- response - " + s);
-
                 if (s == null) {
-                    //textview("안되네요~~~");
                 } else {
                     mJsonString = s;
 

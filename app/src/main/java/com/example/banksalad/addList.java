@@ -221,6 +221,7 @@ public class addList extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String id=params[0];
             String postParam="cal_sport_userID="+id;
+            Log.d(TAG,"음식 달력 표시 id: "+id);
 
             try {
                 URL url = new URL(target);
