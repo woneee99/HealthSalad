@@ -250,14 +250,12 @@ public class fragPlan extends Fragment {
      * @param month
      */
     private void setCalendarDate(int month, int dayNum) {
-        mCal.set(Calendar.MONTH, month - 1);
 
         for (int i = 0, j = dayNum; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++, j++) {
             dayList.add(new fragPlan.DayItem("1", "" + (i + 1), "0세트"));
             if (j % 7 == 0)
                 dayList.add(new fragPlan.DayItem("0", "" + ((j / 8) + 2) + "주차", ""));//j:처음=1, 칸 수
         }
-
     }
 
     /**
