@@ -6,24 +6,24 @@
         android:enabled="true"
         android:title="cal"/>
     <item
-        android:id="@+id/user"
-        android:icon="@drawable/ic_mypage"
+        android:id="@+id/plan"
+        android:icon="@drawable/ic_plan"
         android:enabled="true"
-        android:title="user"/>
+        android:title="plan"/>
     <item
         android:id="@+id/main"
         android:icon="@drawable/ic_main"
         android:enabled="true"
         android:title="main"/>
     <item
-        android:id="@+id/plan"
-        android:icon="@drawable/ic_plan"
-        android:enabled="true"
-        android:title="plan"/>
-    <item
         android:id="@+id/watch"
         android:icon="@drawable/ic_watch"
         android:enabled="true"
         android:title="change"/>
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/ic_mypage"
+        android:enabled="true"
+        android:title="user"/>
 
 </menu>
