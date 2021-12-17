@@ -48,7 +48,6 @@ public class fragUser extends Fragment {
             }else{
                 BMI.setText("비만");
             }
-            Log.d(TAG, userName);
             name.setText(userName);
             birth.setText(userBirth);
             weight.setText(userWeight);

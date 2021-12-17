@@ -258,7 +258,6 @@ public class fragCal extends Fragment {
      * @param month
      */
     private void setCalendarDate(int month, int dayNum) {
-        mCal.set(Calendar.MONTH, month - 1);
 
         for (int i = 0, j = dayNum; i < mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++, j++) {
             dayList.add(new fragCal.DayItem("1", "" + (i + 1), 0.0, ""));

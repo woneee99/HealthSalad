@@ -17,21 +17,22 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:background="@drawable/rounded"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="아이디" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp">
+            android:layout_marginLeft="20dp">
 
             <EditText
                 android:id="@+id/join_id"
@@ -43,14 +44,15 @@
                 android:id="@+id/validateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="중복확인" />
+                android:text="중복확인"
+                android:layout_marginRight="20dp"/>
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="비밀번호" />
 
@@ -59,13 +61,14 @@
             android:id="@+id/join_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:inputType="textPassword" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="비밀번호 확인" />
 
@@ -74,13 +77,14 @@
             android:id="@+id/join_chk_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:inputType="textPassword" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="이름" />
 
@@ -88,12 +92,12 @@
             android:id="@+id/join_name"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp" />
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="생년월일(8자리)" />
 
@@ -101,12 +105,12 @@
             android:id="@+id/join_birth"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp" />
+            android:layout_marginLeft="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="키" />
 
@@ -114,19 +118,20 @@
             android:id="@+id/join_height"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp" />
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="20dp"
             android:baselineAligned="false"
             android:text="몸무게" />
 
         <EditText
             android:id="@+id/join_weight"
             android:layout_width="100dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"/>
 
         <Button
             android:id="@+id/lets_join"
