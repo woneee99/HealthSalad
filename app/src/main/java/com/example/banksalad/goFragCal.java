@@ -71,6 +71,8 @@ public class goFragCal extends AppCompatActivity {
         userTask.execute(userID1);
 
         bottomNavigationView = findViewById(R.id.navigation);
+        //첫화면
+        bottomNavigationView.setSelectedItemId(R.id.cal);
 
         //case 함수를 통해 클릭 받을 때마다 화면 변경하기
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -147,6 +149,7 @@ public class goFragCal extends AppCompatActivity {
                     }
                 }
             } catch (JSONException e) {
+                Log.d(TAG, "Error ", e);
                 Toast.makeText(getApplicationContext(), "오류", Toast.LENGTH_SHORT).show();
             }
         }

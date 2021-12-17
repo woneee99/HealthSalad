@@ -492,7 +492,6 @@ public class fragCal extends Fragment {
         protected String doInBackground(String... params) {
             String id=params[0];
             String postParam="cal_food_userID="+id;
-            Log.d(TAG,"id로 검색~~"+id);
 
             try {
                 URL url = new URL(target);

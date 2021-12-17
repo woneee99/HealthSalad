@@ -76,7 +76,6 @@ public class go extends AppCompatActivity {
         //첫화면
         bottomNavigationView.setSelectedItemId(R.id.plan);
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragPlan).commitAllowingStateLoss();
 
         //case 함수를 통해 클릭 받을 때마다 화면 변경하기
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -128,7 +127,7 @@ public class go extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://10.0.2.2/plan_info.php";
+            target = "http://10.0.2.2/user_info.php";
         }
 
         @Override
@@ -142,7 +141,6 @@ public class go extends AppCompatActivity {
 
             try {
                 if (s == null) {
-                    //textview("X");
                 } else {
                     mJsonString = s;
 
@@ -161,7 +159,6 @@ public class go extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Toast.makeText(getApplicationContext(), "오류", Toast.LENGTH_SHORT).show();
-                //Log.d(TAG,"POST 에러: "+e);
             }
         }
 
@@ -186,7 +183,6 @@ public class go extends AppCompatActivity {
                 outputStream.close();
 
                 int responseStatusCode=httpURLConnection.getResponseCode();
-                Log.d(TAG,"response code - "+responseStatusCode);
 
                 InputStream inputStream;
                 if(responseStatusCode == HttpURLConnection.HTTP_OK) {
@@ -213,7 +209,6 @@ public class go extends AppCompatActivity {
                 return sb.toString().trim();
 
             } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
                 errorString = e.toString();
             }
             return null;

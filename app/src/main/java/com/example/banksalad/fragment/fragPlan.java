@@ -157,18 +157,11 @@ public class fragPlan extends Fragment {
         map=new HashMap<>();
 //        Intent addintent=new Intent(getActivity(),AddSportPlanActivity.class);//intent설정
 
-
-        user_id = getArguments().getString("userID");//main에서 받아옴
-
-        Log.d(TAG,"go에서 받아오긴 할거임"+user_id);
-
-
+        user_id = getActivity().getIntent().getStringExtra("userID");
 
         fragPlan.GetData task = new fragPlan.GetData();
 
-        Log.d(TAG,"넘겨주는 id"+user_id);
         task.execute(user_id);
-
 
         tvDate = (TextView) view.findViewById(R.id.tv_date);
         gridView = (GridView) view.findViewById(R.id.gridview);
@@ -237,7 +230,6 @@ public class fragPlan extends Fragment {
                     pickdays += (showMon < 10) ? "0" + showMon : showMon;
                     pickdays += (pDay < 10) ? "0" + pDay : pDay;
 
-                    Log.d(TAG,"선택 날짜 "+pickdays);
                 }
             }
         });
@@ -309,7 +301,6 @@ public class fragPlan extends Fragment {
                 posDays+=(pDay<10)? "0"+pDay:pDay;
 
                 if(map.containsKey(posDays)==true) {
-                    Log.d(TAG,map.get(posDays)+"");
                     dayList.get(position).setSet(map.get(posDays).toString()+"세트");
                 }
 
@@ -428,31 +419,24 @@ public class fragPlan extends Fragment {
 
 
             if (todays.equals(posDays)) { //오늘 day 텍스트 컬러 변경
-                Log.d(TAG,"오늘컬러~~");
-                Log.d(TAG,"todays: "+todays+" posdays: "+posDays);
                 TextView textView=holder.tvItemDay;
                 textView.setTextColor(getResources().getColor(R.color.colorAccent));
 
                 todaytv=holder.tvItemDay;
             }
 
-
             //textview 추가
             holder.tvItemWorks.removeAllViews();
             container = holder.tvItemWorks;
 
 
-
-
             if (!dayList.get(position).getType().equals("0")) {
-                Log.d(TAG, "반복문 넘어옴~~, dbsize: "+dbList.size());
                 for (int i = 0; i < dbList.size(); i++) {
                     if(posDays.equals(dbList.get(i).getDay())) {
                         textview(dbList.get(i).getSport());
                     }
                 }
             }
-
 
             return convertView;
         }
@@ -482,7 +466,6 @@ public class fragPlan extends Fragment {
             try {
 
 //            progressDialog.dismiss();
-                Log.d(TAG, "Activity- response - " + s);
 
                 if (s == null) {
                     textview("안되네요~~~");
@@ -500,7 +483,6 @@ public class fragPlan extends Fragment {
                         inp += temp.getString("sport_set");
                         dbList.add(new fragPlan.DbItem(inpDay,inp));
 
-                        Log.d(TAG,"받아온 세트! "+temp.getString("sport_set"));
 
                         int mSet=temp.getInt("sport_set");
                         if(map.containsKey(inpDay)==true){
@@ -508,11 +490,9 @@ public class fragPlan extends Fragment {
                         }
                         map.put(inpDay,mSet);
 
-                        Log.d(TAG,"하나 Day: "+inpDay+"내용: "+inp);
                     }
                 }
             } catch (JSONException e) {
-                Log.d(TAG, "POST 에러~~: " + e);
             }
 
             gridAdapter.notifyDataSetChanged();
@@ -569,7 +549,6 @@ public class fragPlan extends Fragment {
                 return sb.toString().trim();
 
             } catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
                 errorString = e.toString();
             }
             return null;
@@ -607,7 +586,6 @@ public class fragPlan extends Fragment {
 
             container.addView(view1);
         } else {
-            Log.d(TAG, "NULL인가벼~~~~~");
         }
 
     }
